@@ -5,5 +5,29 @@
   },
   "dependencies": {
     "discord.js": "^14.7.1"
-  }
+  },
+  "name": "aoi.parser",
+  "version": "1.0.0",
+  "description": "A parser for Aoi.js' Message System",
+  "author": {
+    "name": "USERSATOSHI"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "start": "node ./dist/index.js",
+    "prestart": "npm run build",
+    "prepublish": "npm run build",
+    "publish": "npm publish",
+    "test": "jest"
+  },
+  "files": [
+    "dist",
+    "package.json",
+    "README.md",
+    "LICENSE",
+    "tsconfig.json",
+    ".gitignore"
+  ]
 }
