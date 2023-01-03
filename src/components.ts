@@ -428,6 +428,7 @@ export function parseOptions(input: Block) {
             users?: string[];
             replied_user?: boolean;
         };
+        fetchReply?: boolean;
     } = {
         tts: false,
         message_reference: undefined,
@@ -455,6 +456,8 @@ export function parseOptions(input: Block) {
                     options.allowed_mentions.users = subvalues;
                 }
             }
+        } else if (name === "fetchReply") {
+            options.fetchReply = true;
         }
     }
     return options;
@@ -469,7 +472,7 @@ export function parseExtraOptions(input: Block) {
             time: string | number;
             messages: any[];
         };
-        deleteAfter: number | string;
+        deleteIn: number | string;
         deleteCommand: boolean;
     } = {
         interaction: false,
@@ -479,7 +482,7 @@ export function parseExtraOptions(input: Block) {
             time: 0,
             messages: [],
         },
-        deleteAfter: 0,
+        deleteIn: 0,
         deleteCommand: false,
     };
 
@@ -497,8 +500,8 @@ export function parseExtraOptions(input: Block) {
             for (const msg of child.childs) {
                 options.edits.messages.push(parseMessage(msg));
             }
-        } else if (name === "deleteAfter") {
-            options.deleteAfter = values[0];
+        } else if (name === "delete") {
+            options.deleteIn = values[0];
         } else if (name === "deleteCommand") {
             options.deleteCommand = true;
         }

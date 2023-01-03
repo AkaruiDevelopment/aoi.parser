@@ -49,6 +49,7 @@ export declare function parseOptions(input: Block): {
         users?: string[];
         replied_user?: boolean;
     };
+    fetchReply?: boolean | undefined;
 };
 export declare function parseExtraOptions(input: Block): {
     interaction: boolean;
@@ -58,7 +59,7 @@ export declare function parseExtraOptions(input: Block): {
         time: string | number;
         messages: any[];
     };
-    deleteAfter: number | string;
+    deleteIn: number | string;
     deleteCommand: boolean;
 };
 export declare function parseMessage(ast: Block): MessageCreateOptions;

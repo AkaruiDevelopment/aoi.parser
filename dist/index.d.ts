@@ -10,7 +10,7 @@ export declare function parse(input: string): {
             time: string | number;
             messages: any[];
         };
-        deleteAfter: string | number;
+        deleteIn: string | number;
         deleteCommand: boolean;
     } | undefined;
 };

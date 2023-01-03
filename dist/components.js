@@ -381,6 +381,9 @@ function parseOptions(input) {
                 }
             }
         }
+        else if (name === "fetchReply") {
+            options.fetchReply = true;
+        }
     }
     return options;
 }
@@ -394,7 +397,7 @@ function parseExtraOptions(input) {
             time: 0,
             messages: [],
         },
-        deleteAfter: 0,
+        deleteIn: 0,
         deleteCommand: false,
     };
     for (const child of input.childs) {
@@ -415,8 +418,8 @@ function parseExtraOptions(input) {
                 options.edits.messages.push(parseMessage(msg));
             }
         }
-        else if (name === "deleteAfter") {
-            options.deleteAfter = values[0];
+        else if (name === "delete") {
+            options.deleteIn = values[0];
         }
         else if (name === "deleteCommand") {
             options.deleteCommand = true;
