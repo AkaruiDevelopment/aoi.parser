@@ -35,7 +35,7 @@ function parse(input) {
     let options;
     for (const child of ast.childs) {
         const [name, value] = child.splits;
-        if (name !== "options") {
+        if (name !== "extraOptions") {
             continue;
         }
         options = (0, components_1.parseExtraOptions)(child);

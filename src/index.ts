@@ -31,7 +31,7 @@ export function parse ( input: string )
     for ( const child of ast.childs )
     {
         const [ name, value ] = child.splits;
-        if ( name !== "options" )
+        if ( name !== "extraOptions" )
         {
             continue;
         }
