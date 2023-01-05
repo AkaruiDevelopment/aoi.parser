@@ -50,10 +50,10 @@ export declare function parseOptions(input: Block): {
         replied_user?: boolean;
     };
     fetchReply?: boolean | undefined;
+    ephemeral?: boolean | undefined;
 };
 export declare function parseExtraOptions(input: Block): {
     interaction: boolean;
-    ephemeral: boolean;
     reactions: string[];
     edits: {
         time: string | number;

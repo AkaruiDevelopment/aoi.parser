@@ -4,7 +4,6 @@ export declare function parse(input: string): {
     data: import("discord.js").MessageCreateOptions;
     options: {
         interaction: boolean;
-        ephemeral: boolean;
         reactions: string[];
         edits: {
             time: string | number;

@@ -384,6 +384,9 @@ function parseOptions(input) {
         else if (name === "fetchReply") {
             options.fetchReply = true;
         }
+        else if (name === "ephemeral") {
+            options.ephemeral = true;
+        }
     }
     return options;
 }
@@ -391,7 +394,6 @@ exports.parseOptions = parseOptions;
 function parseExtraOptions(input) {
     const options = {
         interaction: false,
-        ephemeral: false,
         reactions: [],
         edits: {
             time: 0,
@@ -404,9 +406,6 @@ function parseExtraOptions(input) {
         const [name, ...values] = child.splits;
         if (name === "interaction") {
             options.interaction = true;
-        }
-        else if (name === "ephemeral") {
-            options.ephemeral = true;
         }
         else if (name === "reactions") {
             options.reactions = parseReactions(child);
