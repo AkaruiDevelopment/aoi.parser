@@ -58,73 +58,67 @@ export function parseEmbed(embedBlock: Block) {
             fields: [],
         },
     };
-    console.log({ embedBlock: embedBlock.obj });
     for (let child of embedBlock.childs) {
         const [name, ...values] = child.splits;
         if (name === "title") {
-            res.data.title = values
-                .join(":")
-                .trim()
-                .replaceAll("##COLON##", ":");
+            res.data.title = values.join(":").trim().replaceAll("#COLON#", ":");
         }
         if (name === "description") {
             res.data.description = values
                 .join(":")
                 .trim()
-                .replaceAll("##COLON##", ":");
+                .replaceAll("#COLON#", ":");
         }
         if (name === "url") {
-            res.data.url = values.join(":").trim().replaceAll("##COLON##", ":");
+            res.data.url = values.join(":").trim().replaceAll("#COLON#", ":");
         }
         if (name === "color") {
             res.data.color = resolveColor(
                 <ColorResolvable>(
-                    values.join(":").trim().replaceAll("##COLON##", ":")
+                    values.join(":").trim().replaceAll("#COLON#", ":")
                 ),
             );
         }
         if (name === "timestamp") {
             res.data.timestamp =
-                values.join(":").trim().replaceAll("##COLON##", ":") ??
+                values.join(":").trim().replaceAll("#COLON#", ":") ??
                 Date.now();
         }
         if (name === "footer") {
             const potentialIcon = values.pop()?.trim();
             if (potentialIcon?.startsWith("http")) {
                 res.data.footer = {
-                    text: values.join(":").trim().replaceAll("##COLON##", ":"),
-                    icon_url: potentialIcon.trim().replaceAll("##COLON##", ":"),
+                    text: values.join(":").trim().replaceAll("#COLON#", ":"),
+                    icon_url: potentialIcon.trim().replaceAll("#COLON#", ":"),
                 };
             } else {
                 res.data.footer = {
                     text: `${values.join(":")}:${potentialIcon}`
                         .trim()
-                        .replaceAll("##COLON##", ":"),
+                        .replaceAll("#COLON#", ":"),
                 };
             }
         }
         if (name === "image") {
             res.data.image = {
-                url: values.join(":").trim().replaceAll("##COLON##", ":"),
+                url: values.join(":").trim().replaceAll("#COLON#", ":"),
             };
         }
         if (name === "thumbnail") {
             res.data.thumbnail = {
-                url: values.join(":").trim().replaceAll("##COLON##", ":"),
+                url: values.join(":").trim().replaceAll("#COLON#", ":"),
             };
         }
         if (name === "author") {
             if (values[values.length - 1]?.startsWith("http")) {
                 const potentialIcon = values.pop()?.trim();
                 res.data.author = {
-                    name: values.join(":").trim().replaceAll("##COLON##", ":"),
-                    icon_url: potentialIcon
-                        ?.trim()
-                        .replaceAll("##COLON##", ":"),
+                    name: values.join(":").trim().replaceAll("#COLON#", ":"),
+                    icon_url: potentialIcon?.trim().replaceAll("#COLON#", ":"),
                 };
             } else {
                 res.data.author = {
-                    name: values.join(":").trim().replaceAll("##COLON##", ":"),
+                    name: values.join(":").trim().replaceAll("#COLON#", ":"),
                 };
             }
         }
@@ -133,27 +127,27 @@ export function parseEmbed(embedBlock: Block) {
                 res.data.author.url = values
                     .join(":")
                     .trim()
-                    .replaceAll("##COLON##", ":");
+                    .replaceAll("#COLON#", ":");
             }
         }
         if (name === "field") {
             if (["yes", "no"].includes(values[values.length - 1]?.trim())) {
                 const inline = values.pop()?.trim() === "yes";
                 const name =
-                    values.shift()?.trim().replaceAll("##COLON##", ":") ?? " ";
+                    values.shift()?.trim().replaceAll("#COLON#", ":") ?? " ";
                 const value = values
                     .join(":")
                     .trim()
-                    .replaceAll("##COLON##", ":");
+                    .replaceAll("#COLON#", ":");
                 const field = { name, value, inline };
                 res.data.fields.push(field);
             } else {
                 const name =
-                    values.shift()?.trim().replaceAll("##COLON##", ":") ?? " ";
+                    values.shift()?.trim().replaceAll("#COLON#", ":") ?? " ";
                 const value = values
                     .join(":")
                     .trim()
-                    .replaceAll("##COLON##", ":");
+                    .replaceAll("#COLON#", ":");
                 const field = { name, value };
                 res.data.fields.push(field);
             }
@@ -175,13 +169,17 @@ export function parseComponents(input: Block) {
                 style: 1,
                 label: "",
             };
-            const label = <string>values.shift()?.trim();
+            const label = <string>(
+                values.shift()?.trim().replaceAll("#COLON#", ":")
+            );
             const style = <
                 "primary" | "secondary" | "success" | "danger" | "link" | number
             >values.shift()?.trim();
-            const customIdorUrl = <string>values.shift()?.trim();
+            const customIdorUrl = <string>(
+                values.shift()?.trim().replaceAll("#COLON#", ":")
+            );
             const disabled = values.shift()?.trim() === "yes";
-            const emoji = values.shift()?.trim();
+            const emoji = values.shift()?.trim().replaceAll("#COLON#", ":");
             let parsedEmoji:
                 | undefined
                 | { name: string; id: string; animated: boolean } = undefined;
@@ -216,8 +214,12 @@ export function parseComponents(input: Block) {
                 placeholder: "",
                 options: [],
             };
-            const customId = <string>values.shift()?.trim();
-            const placeholder = <string>values.shift()?.trim();
+            const customId = <string>(
+                values.shift()?.trim().replaceAll("#COLON#", ":")
+            );
+            const placeholder = <string>(
+                values.shift()?.trim().replaceAll("#COLON#", ":")
+            );
             const minValues = <number>Number(values.shift()?.trim());
             const maxValues = <number>Number(values.shift()?.trim());
             const disabled = values.shift()?.trim() === "yes";
@@ -225,11 +227,19 @@ export function parseComponents(input: Block) {
             for (const subchild of child.childs) {
                 const [subname, ...subvalues] = subchild.splits;
                 if (subname === "option") {
-                    const label = <string>subvalues.shift()?.trim();
-                    const value = <string>subvalues.shift()?.trim();
-                    const description = <string>subvalues.shift()?.trim();
+                    const label = <string>(
+                        subvalues.shift()?.trim().replaceAll("#COLON#", ":")
+                    );
+                    const value = <string>(
+                        subvalues.shift()?.trim().replaceAll("#COLON#", ":")
+                    );
+                    const description = <string>(
+                        subvalues.shift()?.trim().replaceAll("#COLON#", ":")
+                    );
                     const defaultSelected = subvalues.shift()?.trim() === "yes";
-                    const emoji = <string>subvalues.shift()?.trim();
+                    const emoji = <string>(
+                        subvalues.shift()?.trim().replaceAll("#COLON#", ":")
+                    );
                     let parsedEmoji:
                         | undefined
                         | { name: string; id?: string; animated?: boolean } =
@@ -267,8 +277,12 @@ export function parseComponents(input: Block) {
                 placeholder: "",
             };
 
-            const customId = <string>values.shift()?.trim(),
-                placeholder = <string>values.shift()?.trim(),
+            const customId = <string>(
+                    values.shift()?.trim().replaceAll("#COLON#", ":")
+                ),
+                placeholder = <string>(
+                    values.shift()?.trim().replaceAll("#COLON#", ":")
+                ),
                 min_values = Number(values.shift()?.trim()),
                 max_values = Number(values.shift()?.trim()),
                 disabled = values.shift()?.trim() === "yes";
@@ -286,8 +300,12 @@ export function parseComponents(input: Block) {
                 placeholder: "",
             };
 
-            const customId = <string>values.shift()?.trim(),
-                placeholder = <string>values.shift()?.trim(),
+            const customId = <string>(
+                    values.shift()?.trim().replaceAll("#COLON#", ":")
+                ),
+                placeholder = <string>(
+                    values.shift()?.trim().replaceAll("#COLON#", ":")
+                ),
                 min_values = Number(values.shift()?.trim()),
                 max_values = Number(values.shift()?.trim()),
                 disabled = values.shift()?.trim() === "yes";
@@ -304,8 +322,12 @@ export function parseComponents(input: Block) {
                 type: 7,
                 placeholder: "",
             };
-            const customId = <string>values.shift()?.trim();
-            const placeholder = <string>values.shift()?.trim();
+            const customId = <string>(
+                values.shift()?.trim().replaceAll("#COLON#", ":")
+            );
+            const placeholder = <string>(
+                values.shift()?.trim().replaceAll("#COLON#", ":")
+            );
             const min_values = Number(values.shift()?.trim());
             const max_values = Number(values.shift()?.trim());
             const disabled = values.shift()?.trim() === "yes";
@@ -322,8 +344,12 @@ export function parseComponents(input: Block) {
                 placeholder: "",
                 channel_types: [],
             };
-            const customId = <string>values.shift()?.trim();
-            const placeholder = <string>values.shift()?.trim();
+            const customId = <string>(
+                values.shift()?.trim().replaceAll("#COLON#", ":")
+            );
+            const placeholder = <string>(
+                values.shift()?.trim().replaceAll("#COLON#", ":")
+            );
             const min_values = Number(values.shift()?.trim());
             const max_values = Number(values.shift()?.trim());
             const disabled = values.shift()?.trim() === "yes";
@@ -352,15 +378,23 @@ export function parseComponents(input: Block) {
                 label: "",
                 style: 1,
             };
-            const label = <string>values.shift()?.trim();
+            const label = <string>(
+                values.shift()?.trim().replaceAll("#COLON#", ":")
+            );
             const style = <TextInputStyles>(<unknown>values.shift()?.trim());
-            const customId = <string>values.shift()?.trim();
+            const customId = <string>(
+                values.shift()?.trim().replaceAll("#COLON#", ":")
+            );
             const parsedStyle = <1 | 2>(
                 (!isNaN(Number(style)) ? Number(style) : TextInputStyles[style])
             );
-            const placeholder = <string>values.shift()?.trim();
+            const placeholder = <string>(
+                values.shift()?.trim().replaceAll("#COLON#", ":")
+            );
             const required = values.shift()?.trim() === "yes";
-            const value = <string>values.shift()?.trim();
+            const value = <string>(
+                values.shift()?.trim().replaceAll("#COLON#", ":")
+            );
             const min_length = Number(values.shift()?.trim()) ?? 1;
             const max_length = Number(values.shift()?.trim()) ?? 1;
 

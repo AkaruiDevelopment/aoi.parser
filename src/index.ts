@@ -3,8 +3,8 @@ import { parseMessage, parseExtraOptions } from "./components";
 
 export function createAst(input: string) {
     input = input
-        .replaceAll("\\{", "##OPEN_BRACE##")
-        .replaceAll("\\}", "##CLOSE_BRACE##").replaceAll("\\:", "##COLON##");
+        .replaceAll("\\{", "#RIGHT_BRACKET#")
+        .replaceAll("\\}", "#LEFT_BRACKET#").replaceAll("\\:", "#COLON#");
     let parent = new Block("");
     for (let char of input) {
         if (char === "{") {

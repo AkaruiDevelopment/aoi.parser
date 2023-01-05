@@ -10,71 +10,65 @@ function parseEmbed(embedBlock) {
             fields: [],
         },
     };
-    console.log({ embedBlock: embedBlock.obj });
     for (let child of embedBlock.childs) {
         const [name, ...values] = child.splits;
         if (name === "title") {
-            res.data.title = values
-                .join(":")
-                .trim()
-                .replaceAll("##COLON##", ":");
+            res.data.title = values.join(":").trim().replaceAll("#COLON#", ":");
         }
         if (name === "description") {
             res.data.description = values
                 .join(":")
                 .trim()
-                .replaceAll("##COLON##", ":");
+                .replaceAll("#COLON#", ":");
         }
         if (name === "url") {
-            res.data.url = values.join(":").trim().replaceAll("##COLON##", ":");
+            res.data.url = values.join(":").trim().replaceAll("#COLON#", ":");
         }
         if (name === "color") {
-            res.data.color = (0, discord_js_1.resolveColor)((values.join(":").trim().replaceAll("##COLON##", ":")));
+            res.data.color = (0, discord_js_1.resolveColor)((values.join(":").trim().replaceAll("#COLON#", ":")));
         }
         if (name === "timestamp") {
             res.data.timestamp =
-                values.join(":").trim().replaceAll("##COLON##", ":") ??
+                values.join(":").trim().replaceAll("#COLON#", ":") ??
                     Date.now();
         }
         if (name === "footer") {
             const potentialIcon = values.pop()?.trim();
             if (potentialIcon?.startsWith("http")) {
                 res.data.footer = {
-                    text: values.join(":").trim().replaceAll("##COLON##", ":"),
-                    icon_url: potentialIcon.trim().replaceAll("##COLON##", ":"),
+                    text: values.join(":").trim().replaceAll("#COLON#", ":"),
+                    icon_url: potentialIcon.trim().replaceAll("#COLON#", ":"),
                 };
             }
             else {
                 res.data.footer = {
                     text: `${values.join(":")}:${potentialIcon}`
                         .trim()
-                        .replaceAll("##COLON##", ":"),
+                        .replaceAll("#COLON#", ":"),
                 };
             }
         }
         if (name === "image") {
             res.data.image = {
-                url: values.join(":").trim().replaceAll("##COLON##", ":"),
+                url: values.join(":").trim().replaceAll("#COLON#", ":"),
             };
         }
         if (name === "thumbnail") {
             res.data.thumbnail = {
-                url: values.join(":").trim().replaceAll("##COLON##", ":"),
+                url: values.join(":").trim().replaceAll("#COLON#", ":"),
             };
         }
         if (name === "author") {
             if (values[values.length - 1]?.startsWith("http")) {
                 const potentialIcon = values.pop()?.trim();
                 res.data.author = {
-                    name: values.join(":").trim().replaceAll("##COLON##", ":"),
-                    icon_url: potentialIcon
-                        ?.trim()
-                        .replaceAll("##COLON##", ":"),
+                    name: values.join(":").trim().replaceAll("#COLON#", ":"),
+                    icon_url: potentialIcon?.trim().replaceAll("#COLON#", ":"),
                 };
             }
             else {
                 res.data.author = {
-                    name: values.join(":").trim().replaceAll("##COLON##", ":"),
+                    name: values.join(":").trim().replaceAll("#COLON#", ":"),
                 };
             }
         }
@@ -83,26 +77,26 @@ function parseEmbed(embedBlock) {
                 res.data.author.url = values
                     .join(":")
                     .trim()
-                    .replaceAll("##COLON##", ":");
+                    .replaceAll("#COLON#", ":");
             }
         }
         if (name === "field") {
             if (["yes", "no"].includes(values[values.length - 1]?.trim())) {
                 const inline = values.pop()?.trim() === "yes";
-                const name = values.shift()?.trim().replaceAll("##COLON##", ":") ?? " ";
+                const name = values.shift()?.trim().replaceAll("#COLON#", ":") ?? " ";
                 const value = values
                     .join(":")
                     .trim()
-                    .replaceAll("##COLON##", ":");
+                    .replaceAll("#COLON#", ":");
                 const field = { name, value, inline };
                 res.data.fields.push(field);
             }
             else {
-                const name = values.shift()?.trim().replaceAll("##COLON##", ":") ?? " ";
+                const name = values.shift()?.trim().replaceAll("#COLON#", ":") ?? " ";
                 const value = values
                     .join(":")
                     .trim()
-                    .replaceAll("##COLON##", ":");
+                    .replaceAll("#COLON#", ":");
                 const field = { name, value };
                 res.data.fields.push(field);
             }
@@ -124,11 +118,11 @@ function parseComponents(input) {
                 style: 1,
                 label: "",
             };
-            const label = values.shift()?.trim();
+            const label = (values.shift()?.trim().replaceAll("#COLON#", ":"));
             const style = values.shift()?.trim();
-            const customIdorUrl = values.shift()?.trim();
+            const customIdorUrl = (values.shift()?.trim().replaceAll("#COLON#", ":"));
             const disabled = values.shift()?.trim() === "yes";
-            const emoji = values.shift()?.trim();
+            const emoji = values.shift()?.trim().replaceAll("#COLON#", ":");
             let parsedEmoji = undefined;
             if (emoji) {
                 let [animated, name, id] = emoji.split(":");
@@ -160,8 +154,8 @@ function parseComponents(input) {
                 placeholder: "",
                 options: [],
             };
-            const customId = values.shift()?.trim();
-            const placeholder = values.shift()?.trim();
+            const customId = (values.shift()?.trim().replaceAll("#COLON#", ":"));
+            const placeholder = (values.shift()?.trim().replaceAll("#COLON#", ":"));
             const minValues = Number(values.shift()?.trim());
             const maxValues = Number(values.shift()?.trim());
             const disabled = values.shift()?.trim() === "yes";
@@ -169,11 +163,11 @@ function parseComponents(input) {
             for (const subchild of child.childs) {
                 const [subname, ...subvalues] = subchild.splits;
                 if (subname === "option") {
-                    const label = subvalues.shift()?.trim();
-                    const value = subvalues.shift()?.trim();
-                    const description = subvalues.shift()?.trim();
+                    const label = (subvalues.shift()?.trim().replaceAll("#COLON#", ":"));
+                    const value = (subvalues.shift()?.trim().replaceAll("#COLON#", ":"));
+                    const description = (subvalues.shift()?.trim().replaceAll("#COLON#", ":"));
                     const defaultSelected = subvalues.shift()?.trim() === "yes";
-                    const emoji = subvalues.shift()?.trim();
+                    const emoji = (subvalues.shift()?.trim().replaceAll("#COLON#", ":"));
                     let parsedEmoji = undefined;
                     if (emoji) {
                         let [animated, name, id] = emoji.split(":");
@@ -208,7 +202,7 @@ function parseComponents(input) {
                 type: 5,
                 placeholder: "",
             };
-            const customId = values.shift()?.trim(), placeholder = values.shift()?.trim(), min_values = Number(values.shift()?.trim()), max_values = Number(values.shift()?.trim()), disabled = values.shift()?.trim() === "yes";
+            const customId = (values.shift()?.trim().replaceAll("#COLON#", ":")), placeholder = (values.shift()?.trim().replaceAll("#COLON#", ":")), min_values = Number(values.shift()?.trim()), max_values = Number(values.shift()?.trim()), disabled = values.shift()?.trim() === "yes";
             userInput.custom_id = customId;
             userInput.placeholder = placeholder;
             userInput.min_values = min_values;
@@ -222,7 +216,7 @@ function parseComponents(input) {
                 type: 6,
                 placeholder: "",
             };
-            const customId = values.shift()?.trim(), placeholder = values.shift()?.trim(), min_values = Number(values.shift()?.trim()), max_values = Number(values.shift()?.trim()), disabled = values.shift()?.trim() === "yes";
+            const customId = (values.shift()?.trim().replaceAll("#COLON#", ":")), placeholder = (values.shift()?.trim().replaceAll("#COLON#", ":")), min_values = Number(values.shift()?.trim()), max_values = Number(values.shift()?.trim()), disabled = values.shift()?.trim() === "yes";
             roleInput.custom_id = customId;
             roleInput.placeholder = placeholder;
             roleInput.min_values = min_values;
@@ -236,8 +230,8 @@ function parseComponents(input) {
                 type: 7,
                 placeholder: "",
             };
-            const customId = values.shift()?.trim();
-            const placeholder = values.shift()?.trim();
+            const customId = (values.shift()?.trim().replaceAll("#COLON#", ":"));
+            const placeholder = (values.shift()?.trim().replaceAll("#COLON#", ":"));
             const min_values = Number(values.shift()?.trim());
             const max_values = Number(values.shift()?.trim());
             const disabled = values.shift()?.trim() === "yes";
@@ -255,8 +249,8 @@ function parseComponents(input) {
                 placeholder: "",
                 channel_types: [],
             };
-            const customId = values.shift()?.trim();
-            const placeholder = values.shift()?.trim();
+            const customId = (values.shift()?.trim().replaceAll("#COLON#", ":"));
+            const placeholder = (values.shift()?.trim().replaceAll("#COLON#", ":"));
             const min_values = Number(values.shift()?.trim());
             const max_values = Number(values.shift()?.trim());
             const disabled = values.shift()?.trim() === "yes";
@@ -286,13 +280,13 @@ function parseComponents(input) {
                 label: "",
                 style: 1,
             };
-            const label = values.shift()?.trim();
+            const label = (values.shift()?.trim().replaceAll("#COLON#", ":"));
             const style = values.shift()?.trim();
-            const customId = values.shift()?.trim();
+            const customId = (values.shift()?.trim().replaceAll("#COLON#", ":"));
             const parsedStyle = ((!isNaN(Number(style)) ? Number(style) : utils_1.TextInputStyles[style]));
-            const placeholder = values.shift()?.trim();
+            const placeholder = (values.shift()?.trim().replaceAll("#COLON#", ":"));
             const required = values.shift()?.trim() === "yes";
-            const value = values.shift()?.trim();
+            const value = (values.shift()?.trim().replaceAll("#COLON#", ":"));
             const min_length = Number(values.shift()?.trim()) ?? 1;
             const max_length = Number(values.shift()?.trim()) ?? 1;
             input.custom_id = customId;

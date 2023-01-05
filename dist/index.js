@@ -8,8 +8,8 @@ const block_1 = __importDefault(require("./block"));
 const components_1 = require("./components");
 function createAst(input) {
     input = input
-        .replaceAll("\\{", "##OPEN_BRACE##")
-        .replaceAll("\\}", "##CLOSE_BRACE##").replaceAll("\\:", "##COLON##");
+        .replaceAll("\\{", "#RIGHT_BRACKET#")
+        .replaceAll("\\}", "#LEFT_BRACKET#").replaceAll("\\:", "#COLON#");
     let parent = new block_1.default("");
     for (let char of input) {
         if (char === "{") {
