@@ -20,6 +20,7 @@
     "prestart": "npm run build",
     "prepublish": "npm run build",
     "publish": "npm publish",
+    "preinstall": "npm run build",
     "test": "jest"
   },
   "files": [
