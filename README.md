@@ -15,9 +15,7 @@ Util.parsers.ErrorHandler = parse;
 Util.parsers.ComponentParser = ( data ) =>
 {
   const ast = createAst( data );
-  console.log( {ast,data})
   const d = ast.childs.map( ( c ) => parseComponents( c ) );
-  console.log( d )
   return d;
 };
 Util.parsers.EmbedParser = ( data ) =>
