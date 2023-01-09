@@ -22,13 +22,5 @@
     "publish": "npm publish",
     "preinstall": "npm run build",
     "test": "jest"
-  },
-  "files": [
-    "dist",
-    "package.json",
-    "README.md",
-    "LICENSE",
-    "tsconfig.json",
-    ".gitignore"
-  ]
+  }
 }
