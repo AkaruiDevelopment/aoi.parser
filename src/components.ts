@@ -14,6 +14,7 @@ import { ChannelTypes, ButtonStyles, TextInputStyles } from "./utils";
 import {
     AttachmentBuilder,
     ColorResolvable,
+    InteractionReplyOptions,
     MessageCreateOptions,
     ReplyOptions,
     resolveColor,
@@ -543,7 +544,7 @@ export function parseExtraOptions(input: Block) {
 }
 
 export function parseMessage(ast: Block) {
-    const messageData: MessageCreateOptions = {
+    const messageData: MessageCreateOptions | InteractionReplyOptions = {
         tts: false,
         embeds: [],
         components: [],
@@ -565,6 +566,10 @@ export function parseMessage(ast: Block) {
             messageData.reply = <ReplyOptions>(
                 (<unknown>options.message_reference?.message_id)
             );
+            // @ts-ignore
+            messageData.fetchReply = options.fetchReply;
+            // @ts-ignore
+            messageData.ephemeral = options.ephemeral;
         } else if (name === "stickers") {
             messageData.stickers = parseStickers(child);
         } else if (name === "file" || name === "attachment") {
