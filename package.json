@@ -30,11 +30,6 @@
     "type": "git"
   },
   "readme": "README.md",
-  "files": [
-    "README.md",
-    "package.json",
-    "tsconfig.json"
-  ],
   "keywords": [
     "aoi.js",
     "parser",
