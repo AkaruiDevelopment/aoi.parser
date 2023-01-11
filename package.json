@@ -22,17 +22,27 @@
     "publish": "npm publish",
     "test": "jest"
   },
+  "directories": {
+    "dist": "./dist"
+  },
   "repository": {
     "url": "https://github.com/USERSATOSHI/parsers",
     "type": "git"
   },
   "readme": "README.md",
   "files": [
-    "src",
-    "dist",
     "README.md",
     "package.json",
     "tsconfig.json",
-    "tests"
-  ]
+  ],
+  "keywords": [
+    "aoi.js",
+    "parser",
+    "discord",
+    "discord api"
+  ],
+  "bugs": {
+    "url": "https://github.com/usersatoshi/parsers/issues"
+  },
+  "license": "Apache-2.0"
 }
