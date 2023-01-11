@@ -15,7 +15,7 @@
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "scripts": {
-    "build": "tsc",
+    "build": "npx tsc",
     "start": "node ./dist/index.js",
     "prestart": "npm run build",
     "publish": "npm publish",
@@ -26,5 +26,13 @@
     "url": "https://github.com/USERSATOSHI/parsers",
     "type": "git"
   },
-  "readme": "README.md"
+  "readme": "README.md",
+  "files": [
+    "src",
+    "dist",
+    "README.md",
+    "package.json",
+    "tsconfig.json",
+    "tests"
+  ]
 }
