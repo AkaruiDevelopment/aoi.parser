@@ -20,7 +20,6 @@
     "prestart": "npm run build",
     "prepare": "npm run build",
     "publish": "npm publish",
-    "preinstall": "npm run build",
     "test": "jest"
   },
   "repository": {
