@@ -33,7 +33,7 @@
   "files": [
     "README.md",
     "package.json",
-    "tsconfig.json",
+    "tsconfig.json"
   ],
   "keywords": [
     "aoi.js",
