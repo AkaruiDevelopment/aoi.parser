@@ -18,6 +18,7 @@
     "build": "npx tsc",
     "start": "node ./dist/index.js",
     "prestart": "npm run build",
+    "prepare": "npm run build",
     "publish": "npm publish",
     "preinstall": "npm run build",
     "test": "jest"
