@@ -29,7 +29,6 @@
   "readme": "README.md",
   "files": [
     "src",
-    "dist",
     "README.md",
     "package.json",
     "tsconfig.json",
