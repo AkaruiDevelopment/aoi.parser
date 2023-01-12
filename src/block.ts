@@ -32,7 +32,7 @@ export default class Block {
         return this.#content.split(":");
     }
 
-    get obj():any {
+    get obj(): any {
         return {
             name: this.name,
             content: this.content,

@@ -1,5 +1,4 @@
 import Block from "./block";
-import {} from "@discordjs/builders";
 import {
     ActionRow,
     Button,
@@ -10,16 +9,33 @@ import {
     TextInput,
     UserInput,
 } from "./typing";
-import { ChannelTypes, ButtonStyles, TextInputStyles } from "./utils";
 import {
+    ChannelTypes,
+    ButtonStyles,
+    TextInputStyles,
+    removeEscapesAndTrim,
+} from "./utils";
+import {
+    ApplicationCommandBooleanOptionData,
+    ApplicationCommandChannelOptionData,
+    ApplicationCommandMentionableOptionData,
+    ApplicationCommandNumericOptionData,
+    ApplicationCommandOptionChoiceData,
+    ApplicationCommandOptionData,
+    ApplicationCommandRoleOptionData,
+    ApplicationCommandStringOptionData,
+    ApplicationCommandUserOptionData,
+    ApplicationCommandSubCommandData,
+    ApplicationCommandSubGroupData,
     AttachmentBuilder,
+    ChannelType,
     ColorResolvable,
     InteractionReplyOptions,
+    Locale,
     MessageCreateOptions,
     ReplyOptions,
     resolveColor,
 } from "discord.js";
-import { parse } from ".";
 
 export function parseEmbed(embedBlock: Block) {
     const res: {
@@ -60,7 +76,7 @@ export function parseEmbed(embedBlock: Block) {
         },
     };
     for (let child of embedBlock.childs) {
-        let [ name, ...values ] = child.splits;
+        let [name, ...values] = child.splits.map(removeEscapesAndTrim);
         name = name.trim();
         if (name === "title") {
             res.data.title = values.join(":").trim().replaceAll("#COLON#", ":");
@@ -95,7 +111,9 @@ export function parseEmbed(embedBlock: Block) {
                 };
             } else {
                 res.data.footer = {
-                    text: `${values.join(":")}:${potentialIcon}`
+                    text: `${
+                        values.join(":") !== "" ? `${values.join(":")}:` : ""
+                    }:${potentialIcon}`
                         .trim()
                         .replaceAll("#COLON#", ":"),
                 };
@@ -164,8 +182,8 @@ export function parseComponents(input: Block) {
         components: [],
     };
     for (let child of input.childs) {
-        let [ name, ...values ] = child.splits;
-        name = name.trim();   
+        let [name, ...values] = child.splits.map(removeEscapesAndTrim);
+        name = name.trim();
         if (name === "button") {
             const button: Button = {
                 type: 2,
@@ -228,7 +246,8 @@ export function parseComponents(input: Block) {
             const disabled = values.shift()?.trim() === "yes";
             const options = [];
             for (const subchild of child.childs) {
-                let [ subname, ...subvalues ] = subchild.splits;
+                let [subname, ...subvalues] =
+                    subchild.splits.map(removeEscapesAndTrim);
                 subname = subname.trim();
                 if (subname === "option") {
                     const label = <string>(
@@ -364,7 +383,8 @@ export function parseComponents(input: Block) {
             menu.disabled = disabled;
             const channelTypes = [];
             for (const subchild of child.childs) {
-                let [ subname, ...subvalues ] = subchild.splits;
+                let [subname, ...subvalues] =
+                    subchild.splits.map(removeEscapesAndTrim);
                 subname = subname.trim();
                 if (subname === "channelType") {
                     const type = <ChannelTypes>(<unknown>subvalues[0]?.trim());
@@ -420,7 +440,7 @@ export function parseComponents(input: Block) {
 
 export function parseReactions(input: Block) {
     const reactions = [];
-    const [_, ...values] = input.splits;
+    const [_, ...values] = input.splits.map(removeEscapesAndTrim);
     let i = 0;
     while (i < values.length) {
         const v = values[i]?.trim();
@@ -438,12 +458,12 @@ export function parseReactions(input: Block) {
 }
 
 export function parseStickers(input: Block) {
-    const [_, ...values] = input.splits;
+    const [_, ...values] = input.splits.map(removeEscapesAndTrim);
     return <[string] | [string, string] | [string, string, string]>values;
 }
 
 export function parseFiles(input: Block) {
-    let [ name, ...values ] = input.splits;
+    let [name, ...values] = input.splits.map(removeEscapesAndTrim);
     name = name.trim();
     if (name === "file") {
         const name = values.shift()?.trim();
@@ -478,7 +498,7 @@ export function parseOptions(input: Block) {
         },
     };
     for (const child of input.childs) {
-        let [ name, ...values ] = child.splits;
+        let [name, ...values] = child.splits.map(removeEscapesAndTrim);
         name = name.trim();
         if (name === "tts") {
             options.tts = true;
@@ -489,7 +509,8 @@ export function parseOptions(input: Block) {
             options.allowed_mentions.replied_user = true;
         } else if (name === "allowedMentions") {
             for (const subchild of child.childs) {
-                let [ subname, ...subvalues ] = subchild.splits;
+                let [subname, ...subvalues] =
+                    subchild.splits.map(removeEscapesAndTrim);
                 subname = subname.trim();
                 if (subname === "parse") {
                     options.allowed_mentions.parse = subvalues;
@@ -530,7 +551,7 @@ export function parseExtraOptions(input: Block) {
     };
 
     for (const child of input.childs) {
-        let [ name, ...values ] = child.splits;
+        let [name, ...values] = child.splits.map(removeEscapesAndTrim);
         name = name.trim();
         if (name === "interaction") {
             options.interaction = true;
@@ -562,7 +583,7 @@ export function parseMessage(ast: Block) {
     for (const child of ast.childs) {
         content = content.replace(child.name, "");
 
-        let [ name, _ ] = child.splits;
+        let [name, _] = child.splits.map(removeEscapesAndTrim);
         name = name.trim();
         if (name === "newEmbed") {
             messageData.embeds?.push(parseEmbed(child).data);
@@ -589,3 +610,316 @@ export function parseMessage(ast: Block) {
     messageData.content = content?.trim() === "" ? " " : content.trim();
     return messageData;
 }
+
+export function parseChatInputChoice<type extends string | number = string | number>( ast: Block ): ApplicationCommandOptionChoiceData<type>
+{
+    const parent = ast.parent;
+    let type: "string" | "number";
+    if ( parent?.splits[ 0 ] === "string" ) type = "string";
+    else type = "number";
+    const choice: ApplicationCommandOptionChoiceData = {
+        name: "",
+        value: "",
+    };
+    const [_, ...values] = ast.splits.map(removeEscapesAndTrim);
+    choice.name = values.shift()?.trim() ?? "";
+    choice.value =  type === "string" ? values.join(":")?.trim() ?? "" : parseInt(values.join(":")?.trim() ?? "0");
+
+    for (const child of ast.childs) {
+        let [name, ...values] = child.splits.map(removeEscapesAndTrim);
+        name = name.trim();
+        if (name === "locale") {
+            if (!choice.nameLocalizations) choice.nameLocalizations = {};
+            const locale = <Locale>values.shift()?.trim();
+            choice.nameLocalizations[locale] = values.join(":")?.trim() ?? "";
+        }
+    }
+    // @ts-ignore
+    return choice;
+}
+export function parseChatInputStringOptions(ast: Block) {
+    const options: ApplicationCommandStringOptionData = {
+        type: 3,
+        name: "",
+        description: "",
+    };
+    const [_, ...values] = ast.splits.map(removeEscapesAndTrim);
+    options.name = <string>values.shift()?.trim();
+    options.description = <string>values.shift()?.trim();
+    options.required = values.shift()?.trim() === "yes";
+    // @ts-ignore
+    options.autocomplete = values.shift()?.trim() === "yes";
+    options.minLength = parseInt(values.shift()?.trim() ?? "0");
+    options.maxLength = parseInt(values.shift()?.trim() ?? "0");
+
+    for (const child of ast.childs) {
+        const [name, ...value] = child.splits.map(removeEscapesAndTrim);
+        if (name === "choice") {
+            if (!options.choices) options.choices = [];
+            options.choices.push(parseChatInputChoice(child));
+        } else if (name === "locale") {
+            const childname = child.name;
+            const pos = values.findIndex((x) => x.includes(childname));
+            if (pos === 7) {
+                if (!options.nameLocalizations) options.nameLocalizations = {};
+                const locale = <Locale>value.shift()?.trim();
+                options.nameLocalizations[locale] =
+                    value.join(":")?.trim() ?? "";
+            } else if (pos === 8) {
+                if (!options.descriptionLocalizations)
+                    options.descriptionLocalizations = {};
+                const locale = <Locale>value.shift()?.trim();
+                options.descriptionLocalizations[locale] =
+                    value.join(":")?.trim() ?? "";
+            }
+        }
+    }
+    return options;
+}
+
+export function parseChatInputUserRoleMentionableOptions(ast: Block) {
+    const [name, ...values] = ast.splits.map(removeEscapesAndTrim);
+
+    const options:
+        | ApplicationCommandUserOptionData
+        | ApplicationCommandRoleOptionData
+        | ApplicationCommandMentionableOptionData = {
+        type: name === "user" ? 6 : name === "role" ? 8 : 9,
+        name: "",
+        description: "",
+    };
+
+    options.name = <string>values.shift()?.trim();
+    options.description = <string>values.shift()?.trim();
+    options.required = values.shift()?.trim() === "yes";
+
+    for (const child of ast.childs) {
+        const [name, ...value] = child.splits.map(removeEscapesAndTrim);
+        if (name === "locale") {
+            const childname = child.name;
+            const pos = values.findIndex((x) => x.includes(childname));
+            if (pos === 3) {
+                if (!options.nameLocalizations) options.nameLocalizations = {};
+                const locale = <Locale>value.shift()?.trim();
+                options.nameLocalizations[locale] =
+                    value.join(":")?.trim() ?? "";
+            } else if (pos === 4) {
+                if (!options.descriptionLocalizations)
+                    options.descriptionLocalizations = {};
+                const locale = <Locale>value.shift()?.trim();
+                options.descriptionLocalizations[locale] =
+                    value.join(":")?.trim() ?? "";
+            }
+        }
+    }
+    return options;
+}
+
+export function parseChatInputChannelOptions(ast: Block) {
+    const [_, ...values] = ast.splits.map(removeEscapesAndTrim);
+    const options: ApplicationCommandChannelOptionData = {
+        type: 7,
+        name: "",
+        description: "",
+    };
+    options.name = <string>values.shift()?.trim();
+    options.description = <string>values.shift()?.trim();
+    options.required = values.shift()?.trim() === "yes";
+
+    for (const child of ast.childs) {
+        const [name, ...value] = child.splits.map(removeEscapesAndTrim);
+        if (name === "type") {
+            options.channelTypes = value.map((x) =>
+                !isNaN(parseInt(x))
+                    ? parseInt(x)
+                    : ChannelType[<keyof typeof ChannelType>x],
+            );
+        }
+        if (name === "locale") {
+            const childname = child.name;
+            const pos = values.findIndex((x) => x.includes(childname));
+            if (pos === 4) {
+                if (!options.nameLocalizations) options.nameLocalizations = {};
+                const locale = <Locale>value.shift()?.trim();
+                options.nameLocalizations[locale] =
+                    value.join(":")?.trim() ?? "";
+            } else if (pos === 5) {
+                if (!options.descriptionLocalizations)
+                    options.descriptionLocalizations = {};
+                const locale = <Locale>value.shift()?.trim();
+                options.descriptionLocalizations[locale] =
+                    value.join(":")?.trim() ?? "";
+            }
+        }
+    }
+    return options;
+}
+
+export function parseChatInputBooleanOptions ( ast: Block )
+{
+    const [ _, ...values ] = ast.splits.map( removeEscapesAndTrim );
+    const options: ApplicationCommandBooleanOptionData = {
+        type: 5,
+        name: "",
+        description: "",
+    };
+
+    options.name = <string> values.shift()?.trim();
+    options.description = <string> values.shift()?.trim();
+    options.required = values.shift()?.trim() === "yes";
+
+    for ( const child of ast.childs )
+    {
+        const [ name, ...value ] = child.splits.map( removeEscapesAndTrim );
+        if ( name === "locale" )
+        {
+            const childname = child.name;
+            const pos = values.findIndex( ( x ) => x.includes( childname ) );
+            if ( pos === 3 )
+            {
+                if ( !options.nameLocalizations ) options.nameLocalizations = {};
+                const locale = <Locale> value.shift()?.trim();
+                options.nameLocalizations[ locale ] = value.join( ":" )?.trim() ?? "";
+            }
+            else if ( pos === 4 )
+            {
+                if ( !options.descriptionLocalizations ) options.descriptionLocalizations = {};
+                const locale = <Locale> value.shift()?.trim();
+                options.descriptionLocalizations[ locale ] = value.join( ":" )?.trim() ?? "";
+            }
+        }
+    }
+    return options;
+}
+
+export function parseChatInputNumberOptions ( ast: Block )
+{
+    const [ name, ...values ] = ast.splits.map( removeEscapesAndTrim );
+    const options: ApplicationCommandNumericOptionData = {
+        type: name === "integer" ? 4 : 10,
+        name: "",
+        description: "",
+    };
+
+    options.name = <string> values.shift()?.trim();
+    options.description = <string> values.shift()?.trim();
+    options.required = values.shift()?.trim() === "yes";
+    // @ts-ignore
+    options.autocomplete = values.shift()?.trim() === "yes";
+    const min = values.shift()?.trim();
+    const max = values.shift()?.trim();
+    options.minValue = min ? parseInt( min ) : undefined;
+    options.maxValue = max ? parseInt( max ) : undefined;
+
+    for ( const child of ast.childs )
+    { 
+        const [ name, ...value ] = child.splits.map( removeEscapesAndTrim );
+        if ( name === "choice" )
+        {
+            if ( !options.choices ) options.choices = [];
+            options.choices.push( parseChatInputChoice<number>( child ) );
+        }
+        else if ( name === "locale" )
+        {
+            const childname = child.name;
+            const pos = values.findIndex( ( x ) => x.includes( childname ) );
+            if ( pos === 6 )
+            {
+                if ( !options.nameLocalizations ) options.nameLocalizations = {};
+                const locale = <Locale> value.shift()?.trim();
+                options.nameLocalizations[ locale ] = value.join( ":" )?.trim() ?? "";
+            }
+            else if ( pos === 7 )
+            {
+                if ( !options.descriptionLocalizations ) options.descriptionLocalizations = {};
+                const locale = <Locale> value.shift()?.trim();
+                options.descriptionLocalizations[ locale ] = value.join( ":" )?.trim() ?? "";
+            }
+        }
+    }
+    return options;
+}
+
+export function parseChatInputSubCommandOptions ( ast: Block )
+{
+    const [ _, ...values ] = ast.splits.map( removeEscapesAndTrim );
+    const options: ApplicationCommandSubCommandData = {
+        type: 1,
+        name: "",
+        description: "",
+        options: [],
+    };
+
+    options.name = <string> values.shift()?.trim();
+    options.description = <string> values.shift()?.trim();
+    
+    for ( const child of ast.childs )
+    {
+        const [ name, _ ] = child.splits.map( removeEscapesAndTrim );
+                    if (!options.options) options.options = [];
+        if ( name === "string" )
+        {
+            options.options.push( parseChatInputStringOptions( child ) );
+        }
+        else if ( name === "integer" || "number" )
+        {
+            options.options.push( parseChatInputNumberOptions( child ) );
+        }
+        else if ( name === "user" || name === "role" || name === "mentionable" )
+        {
+            options.options.push( parseChatInputUserRoleMentionableOptions( child ) );
+        }
+        else if ( name === "channel" )
+        {
+            options.options.push( parseChatInputChannelOptions( child ) );
+        }
+        else if ( name === "boolean" )
+        {
+            options.options.push( parseChatInputBooleanOptions( child ) );
+        }
+        else if ( name === "subCommand" )
+        {
+          throw new TypeError( "SubCommand cannot be nested in SubCommand" );
+        }
+        else if ( name === "subCommandGroup" )
+        {
+            throw new TypeError( "SubCommandGroup cannot be nested in SubCommand" );
+        }
+    }
+    return options;
+}
+
+export function parseChatInputSubCommandGroupOptions ( ast: Block )
+{
+    const [ _, ...values ] = ast.splits.map( removeEscapesAndTrim );
+    const options: ApplicationCommandSubGroupData = {
+        type: 2,
+        name: "",
+        description: "",
+        options: [],
+    };
+
+    options.name = <string> values.shift()?.trim();
+    options.description = <string> values.shift()?.trim();
+    
+    for ( const child of ast.childs )
+    {
+        if(!options.options) options.options = [];
+        const [ name, _ ] = child.splits.map( removeEscapesAndTrim );
+        if ( name === "subCommand" )
+        {
+            options.options.push( parseChatInputSubCommandOptions( child ) );
+        }
+        else if ( name === "subCommandGroup" )
+        {
+            throw new TypeError( "subCommandGroup cannot be nested in subCommandGroup" );
+        }
+        else
+        {
+            throw new TypeError( "SubCommandGroup can only have SubCommand" );
+        }
+    }
+    return options;
+}
+
+

@@ -1,7 +1,7 @@
-export enum ButtonStyles  {
+export enum ButtonStyles {
     primary = 1,
     secondary,
-    success,   
+    success,
     danger,
     link,
 }
@@ -34,10 +34,28 @@ export enum ChannelTypes {
     GUILD_FORUM = 15,
 }
 
-export enum TextInputStyles
-{
+export enum TextInputStyles {
     short = 1,
     paragraph,
     SHORT = 1,
     PARAGRAPH,
+}
+
+export function removeEscapesAndTrim(msg:string) {
+    return msg
+        .replace(/#RIGHT#/g, "[")
+        .replace(/#LEFT#/g, "]")
+        .replace(/#SEMI#/g, ";")
+        .replace(/#COLON#/g, ":")
+        .replace(/#CHAR#/g, "$")
+        .replace(/#RIGHT_CLICK#/g, ">")
+        .replace(/#LEFT_CLICK#/g, "<")
+        .replace(/#EQUAL#/g, "=")
+        .replace(/#RIGHT_BRACKET#/g, "{")
+        .replace(/#LEFT_BRACKET#/g, "}")
+        .replace(/#COMMA#/g, ",")
+        .replace(/#LB#/g, "(")
+        .replace(/#RB#/g, ")")
+        .replace(/#AND#/g, "&&")
+        .replace(/#OR#/g, "||").trim();
 }

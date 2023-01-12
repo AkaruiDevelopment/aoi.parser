@@ -1,5 +1,7 @@
+import { ApplicationCommandOptionData } from "discord.js";
 import Block from "./block";
-import { parseMessage, parseExtraOptions } from "./components";
+import { parseMessage, parseExtraOptions, parseChatInputBooleanOptions, parseChatInputChannelOptions, parseChatInputNumberOptions, parseChatInputStringOptions, parseChatInputSubCommandGroupOptions, parseChatInputSubCommandOptions, parseChatInputUserRoleMentionableOptions } from "./components";
+import { removeEscapesAndTrim } from "./utils";
 
 export function createAst(input: string) {
     input = input
@@ -38,4 +40,31 @@ export function parse ( input: string )
         options = parseExtraOptions( child );
     }
     return { data, options };
+}
+
+export function parseChatInputOptions(ast: Block) {
+    const options: ApplicationCommandOptionData[] = [];
+    for (const child of ast.childs) {
+        const [name, _] = child.splits.map(removeEscapesAndTrim);
+        if (name === "string") {
+            options.push(parseChatInputStringOptions(child));
+        } else if (name === "integer" || "number") {
+            options.push(parseChatInputNumberOptions(child));
+        } else if (
+            name === "user" ||
+            name === "role" ||
+            name === "mentionable"
+        ) {
+            options.push(parseChatInputUserRoleMentionableOptions(child));
+        } else if (name === "channel") {
+            options.push(parseChatInputChannelOptions(child));
+        } else if (name === "boolean") {
+            options.push(parseChatInputBooleanOptions(child));
+        } else if (name === "subCommand") {
+            options.push(parseChatInputSubCommandOptions(child));
+        } else if (name === "subCommandGroup") {
+            options.push(parseChatInputSubCommandGroupOptions(child));
+        }
+    }
+    return options;
 }
