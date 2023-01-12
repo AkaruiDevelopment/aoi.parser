@@ -650,7 +650,7 @@ export function parseChatInputStringOptions(ast: Block) {
     // @ts-ignore
     options.autocomplete = values.shift()?.trim() === "yes";
     options.minLength = parseInt(values.shift()?.trim() ?? "0");
-    options.maxLength = parseInt(values.shift()?.trim() ?? "0");
+    options.maxLength = parseInt(values.shift()?.trim() ?? "1");
 
     for (const child of ast.childs) {
         const [name, ...value] = child.splits.map(removeEscapesAndTrim);
