@@ -60,7 +60,8 @@ export function parseEmbed(embedBlock: Block) {
         },
     };
     for (let child of embedBlock.childs) {
-        const [name, ...values] = child.splits;
+        let [ name, ...values ] = child.splits;
+        name = name.trim();
         if (name === "title") {
             res.data.title = values.join(":").trim().replaceAll("#COLON#", ":");
         }
@@ -163,7 +164,8 @@ export function parseComponents(input: Block) {
         components: [],
     };
     for (let child of input.childs) {
-        const [name, ...values] = child.splits;
+        let [ name, ...values ] = child.splits;
+        name = name.trim();   
         if (name === "button") {
             const button: Button = {
                 type: 2,
@@ -226,7 +228,8 @@ export function parseComponents(input: Block) {
             const disabled = values.shift()?.trim() === "yes";
             const options = [];
             for (const subchild of child.childs) {
-                const [subname, ...subvalues] = subchild.splits;
+                let [ subname, ...subvalues ] = subchild.splits;
+                subname = subname.trim();
                 if (subname === "option") {
                     const label = <string>(
                         subvalues.shift()?.trim().replaceAll("#COLON#", ":")
@@ -361,7 +364,8 @@ export function parseComponents(input: Block) {
             menu.disabled = disabled;
             const channelTypes = [];
             for (const subchild of child.childs) {
-                const [subname, ...subvalues] = subchild.splits;
+                let [ subname, ...subvalues ] = subchild.splits;
+                subname = subname.trim();
                 if (subname === "channelType") {
                     const type = <ChannelTypes>(<unknown>subvalues[0]?.trim());
                     const parsedType = !isNaN(Number(type))
@@ -439,7 +443,8 @@ export function parseStickers(input: Block) {
 }
 
 export function parseFiles(input: Block) {
-    const [name, ...values] = input.splits;
+    let [ name, ...values ] = input.splits;
+    name = name.trim();
     if (name === "file") {
         const name = values.shift()?.trim();
         return new AttachmentBuilder(Buffer.from(values.join(":")?.trim()), {
@@ -473,7 +478,8 @@ export function parseOptions(input: Block) {
         },
     };
     for (const child of input.childs) {
-        const [name, ...values] = child.splits;
+        let [ name, ...values ] = child.splits;
+        name = name.trim();
         if (name === "tts") {
             options.tts = true;
         } else if (name === "reply") {
@@ -483,7 +489,8 @@ export function parseOptions(input: Block) {
             options.allowed_mentions.replied_user = true;
         } else if (name === "allowedMentions") {
             for (const subchild of child.childs) {
-                const [subname, ...subvalues] = subchild.splits;
+                let [ subname, ...subvalues ] = subchild.splits;
+                subname = subname.trim();
                 if (subname === "parse") {
                     options.allowed_mentions.parse = subvalues;
                 } else if (subname === "roles") {
@@ -523,7 +530,8 @@ export function parseExtraOptions(input: Block) {
     };
 
     for (const child of input.childs) {
-        const [name, ...values] = child.splits;
+        let [ name, ...values ] = child.splits;
+        name = name.trim();
         if (name === "interaction") {
             options.interaction = true;
         } else if (name === "reactions") {
@@ -554,7 +562,8 @@ export function parseMessage(ast: Block) {
     for (const child of ast.childs) {
         content = content.replace(child.name, "");
 
-        const [name, _] = child.splits;
+        let [ name, _ ] = child.splits;
+        name = name.trim();
         if (name === "newEmbed") {
             messageData.embeds?.push(parseEmbed(child).data);
         } else if (name === "actionRow") {
