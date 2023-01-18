@@ -5,9 +5,9 @@
   "exports" : {
     "." : "./dist/index.js",
     "./components" : {
-      "import" : "./dist/components/index.js",
-      "require" : "./dist/components/index.js",
-      "types" : "./dist/components/index.d.ts"
+      "import" : "./dist/components.js",
+      "require" : "./dist/components.js",
+      "types" : "./dist/components.d.ts"
     }
   },
   "dependencies": {
