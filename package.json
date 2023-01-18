@@ -2,6 +2,10 @@
   "devDependencies": {
     "@types/node": "^18.11.18"
   },
+  "exports" : {
+    "." : "./dist/index.js",
+    "./components" : "./dist/components"
+  },
   "dependencies": {
     "discord.js": "^14.7.1",
     "typescript": "^4.9.4"
