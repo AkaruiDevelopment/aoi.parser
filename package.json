@@ -4,7 +4,11 @@
   },
   "exports" : {
     "." : "./dist/index.js",
-    "./components" : "./dist/components.js"
+    "./components" : {
+      "import" : "./dist/components/index.js",
+      "require" : "./dist/components/index.js",
+      "types" : "./dist/components/index.d.ts"
+    }
   },
   "dependencies": {
     "discord.js": "^14.7.1",
