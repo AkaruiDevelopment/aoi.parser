@@ -98,10 +98,11 @@ export function parseEmbed(embedBlock: Block) {
             );
         }
         if (name === "timestamp") {
-            res.data.timestamp =
-                values.join(":").trim().replaceAll("#COLON#", ":") ??
-                Date.now();
-                res.data.timestamp = new Date(res.data.timestamp).toISOString();
+            let timestamp =
+                values.join( ":" ).trim().replaceAll( "#COLON#", ":" ) 
+            let parsedTimestamp = res.data.timestamp == "" ? 
+                Date.now() : Number(res.data.timestamp);
+                res.data.timestamp = new Date(parsedTimestamp).toISOString();
         }
         if (name === "footer") {
             const potentialIcon = values.pop()?.trim();
