@@ -101,6 +101,7 @@ export function parseEmbed(embedBlock: Block) {
             res.data.timestamp =
                 values.join(":").trim().replaceAll("#COLON#", ":") ??
                 Date.now();
+                res.data.timestamp = new Date(res.data.timestamp).toISOString();
         }
         if (name === "footer") {
             const potentialIcon = values.pop()?.trim();
@@ -203,14 +204,20 @@ export function parseComponents(input: Block) {
             const emoji = values.shift()?.trim().replaceAll("#COLON#", ":");
             let parsedEmoji:
                 | undefined
-                | { name: string; id: string; animated: boolean } = undefined;
+                | { name: string; id?: string; animated?: boolean } = undefined;
             if (emoji) {
-                let [animated, name, id] = emoji.split(":");
+                let [ animated, name, id ] = emoji.split( ":" );
+                if ( !name && !id )
+                { 
+                    name = animated;
+                    id = '';
+                    animated = '';
+                }
                 const isAnimated = animated.replace("<", "") === "a";
                 id = id.replace(">", "");
                 parsedEmoji = {
-                    name,
-                    id,
+                    name: name,
+                    id: id === "" ? undefined : id,
                     animated: isAnimated,
                 };
             }
@@ -268,12 +275,18 @@ export function parseComponents(input: Block) {
                         | { name: string; id?: string; animated?: boolean } =
                         undefined;
                     if (emoji) {
-                        let [animated, name, id] = emoji.split(":");
+                        let [ animated, name, id ] = emoji.split( ":" );
+                        if ( !name && !id )
+                        {
+                            name = animated;
+                            id = '';
+                            animated = '';
+                        }
                         const isAnimated = animated.replace("<", "") === "a";
                         id = id.replace(">", "");
                         parsedEmoji = {
                             name,
-                            id,
+                            id : id === "" ? undefined : id,
                             animated: isAnimated,
                         };
                     }

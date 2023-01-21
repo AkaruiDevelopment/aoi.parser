@@ -1,0 +1,29 @@
+[
+    {
+        "name": "1.2.0",
+        "date": "14/01/2023",
+        "changes" : [{
+            "type":"added",
+            "content": "+Support for chatInput options"
+        },{
+            "type":"added",
+            "content": "+Official Documentation"
+        },{
+            "type": "fixed",
+            "content": "~footer returning ':' if iconUrl is not provided"
+        },
+        {
+            "type": "fixed",
+            "content": "~ephermal now works"
+        },
+        {
+            "type": "fixed",
+            "content":"now unicode emoji works in button"
+        },
+        {
+            "type": "fixed",
+            "content": "~timestamp now works properly"
+        }
+    ]
+    }
+]
