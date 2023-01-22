@@ -116,10 +116,6 @@ export function parseEmbed(embedBlock: Block) {
                     icon_url: potentialIcon.trim().replaceAll("#COLON#", ":"),
                 };
             } else {
-                console.log({
-                    values: values.join(":").trim().replaceAll("#COLON#", ":"),
-                    potentialIcon,
-                });
                 res.data.footer = {
                     text: `${
                         values.join(":").trim().replaceAll("#COLON#", ":") !==
