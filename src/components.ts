@@ -98,24 +98,38 @@ export function parseEmbed(embedBlock: Block) {
             );
         }
         if (name === "timestamp") {
-            let timestamp =
-                values.join( ":" ).trim().replaceAll( "#COLON#", ":" ) 
-            let parsedTimestamp = res.data.timestamp == "" ? 
-                Date.now() : Number(res.data.timestamp);
-                res.data.timestamp = new Date(parsedTimestamp).toISOString();
+            let timestamp = values.join(":").trim().replaceAll("#COLON#", ":");
+            console.log(timestamp);
+            let parsedTimestamp =
+                timestamp == "" ? Date.now() : Number(timestamp);
+            res.data.timestamp = new Date(parsedTimestamp).toISOString();
         }
         if (name === "footer") {
             const potentialIcon = values.pop()?.trim();
-            if (potentialIcon?.startsWith("http")) {
+            if (
+                potentialIcon?.startsWith("http://") ||
+                potentialIcon?.startsWith("attachment://") ||
+                potentialIcon?.startsWith("https://")
+            ) {
                 res.data.footer = {
                     text: values.join(":").trim().replaceAll("#COLON#", ":"),
                     icon_url: potentialIcon.trim().replaceAll("#COLON#", ":"),
                 };
             } else {
+                console.log({
+                    values: values.join(":").trim().replaceAll("#COLON#", ":"),
+                    potentialIcon,
+                });
                 res.data.footer = {
                     text: `${
-                        values.join(":") !== "" ? `${values.join(":")}:` : ""
-                    }:${potentialIcon}`
+                        values.join(":").trim().replaceAll("#COLON#", ":") !==
+                        ""
+                            ? `${values
+                                  .join(":")
+                                  .trim()
+                                  .replaceAll("#COLON#", ":")}:`
+                            : ""
+                    }${potentialIcon}`
                         .trim()
                         .replaceAll("#COLON#", ":"),
                 };
@@ -207,12 +221,11 @@ export function parseComponents(input: Block) {
                 | undefined
                 | { name: string; id?: string; animated?: boolean } = undefined;
             if (emoji) {
-                let [ animated, name, id ] = emoji.split( ":" );
-                if ( !name && !id )
-                { 
+                let [animated, name, id] = emoji.split(":");
+                if (!name && !id) {
                     name = animated;
-                    id = '';
-                    animated = '';
+                    id = "";
+                    animated = "";
                 }
                 const isAnimated = animated.replace("<", "") === "a";
                 id = id.replace(">", "");
@@ -276,18 +289,17 @@ export function parseComponents(input: Block) {
                         | { name: string; id?: string; animated?: boolean } =
                         undefined;
                     if (emoji) {
-                        let [ animated, name, id ] = emoji.split( ":" );
-                        if ( !name && !id )
-                        {
+                        let [animated, name, id] = emoji.split(":");
+                        if (!name && !id) {
                             name = animated;
-                            id = '';
-                            animated = '';
+                            id = "";
+                            animated = "";
                         }
                         const isAnimated = animated.replace("<", "") === "a";
                         id = id.replace(">", "");
                         parsedEmoji = {
                             name,
-                            id : id === "" ? undefined : id,
+                            id: id === "" ? undefined : id,
                             animated: isAnimated,
                         };
                     }
@@ -625,11 +637,12 @@ export function parseMessage(ast: Block) {
     return messageData;
 }
 
-export function parseChatInputChoice<type extends string | number = string | number>( ast: Block ): ApplicationCommandOptionChoiceData<type>
-{
+export function parseChatInputChoice<
+    type extends string | number = string | number,
+>(ast: Block): ApplicationCommandOptionChoiceData<type> {
     const parent = ast.parent;
     let type: "string" | "number";
-    if ( parent?.splits[ 0 ] === "string" ) type = "string";
+    if (parent?.splits[0] === "string") type = "string";
     else type = "number";
     const choice: ApplicationCommandOptionChoiceData = {
         name: "",
@@ -637,7 +650,10 @@ export function parseChatInputChoice<type extends string | number = string | num
     };
     const [_, ...values] = ast.splits.map(removeEscapesAndTrim);
     choice.name = values.shift()?.trim() ?? "";
-    choice.value =  type === "string" ? values.join(":")?.trim() ?? "" : parseInt(values.join(":")?.trim() ?? "0");
+    choice.value =
+        type === "string"
+            ? values.join(":")?.trim() ?? ""
+            : parseInt(values.join(":")?.trim() ?? "0");
 
     for (const child of ast.childs) {
         let [name, ...values] = child.splits.map(removeEscapesAndTrim);
@@ -769,94 +785,85 @@ export function parseChatInputChannelOptions(ast: Block) {
     return options;
 }
 
-export function parseChatInputBooleanOptions ( ast: Block )
-{
-    const [ _, ...values ] = ast.splits.map( removeEscapesAndTrim );
+export function parseChatInputBooleanOptions(ast: Block) {
+    const [_, ...values] = ast.splits.map(removeEscapesAndTrim);
     const options: ApplicationCommandBooleanOptionData = {
         type: 5,
         name: "",
         description: "",
     };
 
-    options.name = <string> values.shift()?.trim();
-    options.description = <string> values.shift()?.trim();
+    options.name = <string>values.shift()?.trim();
+    options.description = <string>values.shift()?.trim();
     options.required = values.shift()?.trim() === "yes";
 
-    for ( const child of ast.childs )
-    {
-        const [ name, ...value ] = child.splits.map( removeEscapesAndTrim );
-        if ( name === "locale" )
-        {
+    for (const child of ast.childs) {
+        const [name, ...value] = child.splits.map(removeEscapesAndTrim);
+        if (name === "locale") {
             const childname = child.name;
-            const pos = values.findIndex( ( x ) => x.includes( childname ) );
-            if ( pos === 3 )
-            {
-                if ( !options.nameLocalizations ) options.nameLocalizations = {};
-                const locale = <Locale> value.shift()?.trim();
-                options.nameLocalizations[ locale ] = value.join( ":" )?.trim() ?? "";
-            }
-            else if ( pos === 4 )
-            {
-                if ( !options.descriptionLocalizations ) options.descriptionLocalizations = {};
-                const locale = <Locale> value.shift()?.trim();
-                options.descriptionLocalizations[ locale ] = value.join( ":" )?.trim() ?? "";
+            const pos = values.findIndex((x) => x.includes(childname));
+            if (pos === 3) {
+                if (!options.nameLocalizations) options.nameLocalizations = {};
+                const locale = <Locale>value.shift()?.trim();
+                options.nameLocalizations[locale] =
+                    value.join(":")?.trim() ?? "";
+            } else if (pos === 4) {
+                if (!options.descriptionLocalizations)
+                    options.descriptionLocalizations = {};
+                const locale = <Locale>value.shift()?.trim();
+                options.descriptionLocalizations[locale] =
+                    value.join(":")?.trim() ?? "";
             }
         }
     }
     return options;
 }
 
-export function parseChatInputNumberOptions ( ast: Block )
-{
-    const [ name, ...values ] = ast.splits.map( removeEscapesAndTrim );
+export function parseChatInputNumberOptions(ast: Block) {
+    const [name, ...values] = ast.splits.map(removeEscapesAndTrim);
     const options: ApplicationCommandNumericOptionData = {
         type: name === "integer" ? 4 : 10,
         name: "",
         description: "",
     };
 
-    options.name = <string> values.shift()?.trim();
-    options.description = <string> values.shift()?.trim();
+    options.name = <string>values.shift()?.trim();
+    options.description = <string>values.shift()?.trim();
     options.required = values.shift()?.trim() === "yes";
     // @ts-ignore
     options.autocomplete = values.shift()?.trim() === "yes";
     const min = values.shift()?.trim();
     const max = values.shift()?.trim();
-    options.minValue = min ? parseInt( min ) : undefined;
-    options.maxValue = max ? parseInt( max ) : undefined;
+    options.minValue = min ? parseInt(min) : undefined;
+    options.maxValue = max ? parseInt(max) : undefined;
 
-    for ( const child of ast.childs )
-    { 
-        const [ name, ...value ] = child.splits.map( removeEscapesAndTrim );
-        if ( name === "choice" )
-        {
-            if ( !options.choices ) options.choices = [];
-            options.choices.push( parseChatInputChoice<number>( child ) );
-        }
-        else if ( name === "locale" )
-        {
+    for (const child of ast.childs) {
+        const [name, ...value] = child.splits.map(removeEscapesAndTrim);
+        if (name === "choice") {
+            if (!options.choices) options.choices = [];
+            options.choices.push(parseChatInputChoice<number>(child));
+        } else if (name === "locale") {
             const childname = child.name;
-            const pos = values.findIndex( ( x ) => x.includes( childname ) );
-            if ( pos === 6 )
-            {
-                if ( !options.nameLocalizations ) options.nameLocalizations = {};
-                const locale = <Locale> value.shift()?.trim();
-                options.nameLocalizations[ locale ] = value.join( ":" )?.trim() ?? "";
-            }
-            else if ( pos === 7 )
-            {
-                if ( !options.descriptionLocalizations ) options.descriptionLocalizations = {};
-                const locale = <Locale> value.shift()?.trim();
-                options.descriptionLocalizations[ locale ] = value.join( ":" )?.trim() ?? "";
+            const pos = values.findIndex((x) => x.includes(childname));
+            if (pos === 6) {
+                if (!options.nameLocalizations) options.nameLocalizations = {};
+                const locale = <Locale>value.shift()?.trim();
+                options.nameLocalizations[locale] =
+                    value.join(":")?.trim() ?? "";
+            } else if (pos === 7) {
+                if (!options.descriptionLocalizations)
+                    options.descriptionLocalizations = {};
+                const locale = <Locale>value.shift()?.trim();
+                options.descriptionLocalizations[locale] =
+                    value.join(":")?.trim() ?? "";
             }
         }
     }
     return options;
 }
 
-export function parseChatInputSubCommandOptions ( ast: Block )
-{
-    const [ _, ...values ] = ast.splits.map( removeEscapesAndTrim );
+export function parseChatInputSubCommandOptions(ast: Block) {
+    const [_, ...values] = ast.splits.map(removeEscapesAndTrim);
     const options: ApplicationCommandSubCommandData = {
         type: 1,
         name: "",
@@ -864,48 +871,41 @@ export function parseChatInputSubCommandOptions ( ast: Block )
         options: [],
     };
 
-    options.name = <string> values.shift()?.trim();
-    options.description = <string> values.shift()?.trim();
-    
-    for ( const child of ast.childs )
-    {
-        const [ name, _ ] = child.splits.map( removeEscapesAndTrim );
-                    if (!options.options) options.options = [];
-        if ( name === "string" )
-        {
-            options.options.push( parseChatInputStringOptions( child ) );
-        }
-        else if ( name === "integer" || "number" )
-        {
-            options.options.push( parseChatInputNumberOptions( child ) );
-        }
-        else if ( name === "user" || name === "role" || name === "mentionable" )
-        {
-            options.options.push( parseChatInputUserRoleMentionableOptions( child ) );
-        }
-        else if ( name === "channel" )
-        {
-            options.options.push( parseChatInputChannelOptions( child ) );
-        }
-        else if ( name === "boolean" )
-        {
-            options.options.push( parseChatInputBooleanOptions( child ) );
-        }
-        else if ( name === "subCommand" )
-        {
-          throw new TypeError( "SubCommand cannot be nested in SubCommand" );
-        }
-        else if ( name === "subCommandGroup" )
-        {
-            throw new TypeError( "SubCommandGroup cannot be nested in SubCommand" );
+    options.name = <string>values.shift()?.trim();
+    options.description = <string>values.shift()?.trim();
+
+    for (const child of ast.childs) {
+        const [name, _] = child.splits.map(removeEscapesAndTrim);
+        if (!options.options) options.options = [];
+        if (name === "string") {
+            options.options.push(parseChatInputStringOptions(child));
+        } else if (name === "integer" || "number") {
+            options.options.push(parseChatInputNumberOptions(child));
+        } else if (
+            name === "user" ||
+            name === "role" ||
+            name === "mentionable"
+        ) {
+            options.options.push(
+                parseChatInputUserRoleMentionableOptions(child),
+            );
+        } else if (name === "channel") {
+            options.options.push(parseChatInputChannelOptions(child));
+        } else if (name === "boolean") {
+            options.options.push(parseChatInputBooleanOptions(child));
+        } else if (name === "subCommand") {
+            throw new TypeError("SubCommand cannot be nested in SubCommand");
+        } else if (name === "subCommandGroup") {
+            throw new TypeError(
+                "SubCommandGroup cannot be nested in SubCommand",
+            );
         }
     }
     return options;
 }
 
-export function parseChatInputSubCommandGroupOptions ( ast: Block )
-{
-    const [ _, ...values ] = ast.splits.map( removeEscapesAndTrim );
+export function parseChatInputSubCommandGroupOptions(ast: Block) {
+    const [_, ...values] = ast.splits.map(removeEscapesAndTrim);
     const options: ApplicationCommandSubGroupData = {
         type: 2,
         name: "",
@@ -913,27 +913,21 @@ export function parseChatInputSubCommandGroupOptions ( ast: Block )
         options: [],
     };
 
-    options.name = <string> values.shift()?.trim();
-    options.description = <string> values.shift()?.trim();
-    
-    for ( const child of ast.childs )
-    {
-        if(!options.options) options.options = [];
-        const [ name, _ ] = child.splits.map( removeEscapesAndTrim );
-        if ( name === "subCommand" )
-        {
-            options.options.push( parseChatInputSubCommandOptions( child ) );
-        }
-        else if ( name === "subCommandGroup" )
-        {
-            throw new TypeError( "subCommandGroup cannot be nested in subCommandGroup" );
-        }
-        else
-        {
-            throw new TypeError( "SubCommandGroup can only have SubCommand" );
+    options.name = <string>values.shift()?.trim();
+    options.description = <string>values.shift()?.trim();
+
+    for (const child of ast.childs) {
+        if (!options.options) options.options = [];
+        const [name, _] = child.splits.map(removeEscapesAndTrim);
+        if (name === "subCommand") {
+            options.options.push(parseChatInputSubCommandOptions(child));
+        } else if (name === "subCommandGroup") {
+            throw new TypeError(
+                "subCommandGroup cannot be nested in subCommandGroup",
+            );
+        } else {
+            throw new TypeError("SubCommandGroup can only have SubCommand");
         }
     }
     return options;
 }
-
-
