@@ -1,6 +1,6 @@
 import { ApplicationCommandOptionData } from "discord.js";
 import Block from "./block";
-import { parseMessage, parseExtraOptions, parseChatInputBooleanOptions, parseChatInputChannelOptions, parseChatInputNumberOptions, parseChatInputStringOptions, parseChatInputSubCommandGroupOptions, parseChatInputSubCommandOptions, parseChatInputUserRoleMentionableOptions } from "./components";
+import { parseMessage, parseExtraOptions, parseChatInputBooleanOptions, parseChatInputChannelOptions, parseChatInputNumberOptions, parseChatInputStringOptions, parseChatInputSubCommandGroupOptions, parseChatInputSubCommandOptions, parseChatInputUserRoleMentionableOptions, parseComponents, parseEmbed, parseFiles } from "./components";
 import { removeEscapesAndTrim } from "./utils";
 
 export function createAst(input: string) {
@@ -30,7 +30,7 @@ export function parse ( input: string )
     const ast = createAst( input );
     const data = parseMessage( ast );
     let options;
-    for ( const child of ast.childs )
+    for ( const child of ast.children )
     {
         const [ name, value ] = child.splits;
         if ( name !== "extraOptions" )
@@ -44,7 +44,7 @@ export function parse ( input: string )
 
 export function parseChatInputOptions(ast: Block) {
     const options: ApplicationCommandOptionData[] = [];
-    for (const child of ast.childs) {
+    for (const child of ast.children) {
         const [name, _] = child.splits.map(removeEscapesAndTrim);
         if (name === "string") {
             options.push(parseChatInputStringOptions(child));
@@ -67,4 +67,22 @@ export function parseChatInputOptions(ast: Block) {
         }
     }
     return options;
+}
+
+export function setup( Util: any ) {
+    Util.parsers.ErrorHandler = parse;
+    Util.parsers.ComponentParser = ( data: string ) =>
+    {
+        return createAst( data ).children.map( parseComponents );
+    }
+    Util.parsers.EmbedParser = (data: string) => {
+        return createAst(data).children.map(parseEmbed);    
+    };
+    Util.parsers.FileParser = (data: string) => {
+        return createAst(data).children.map(parseFiles);
+    };
+    Util.parsers.OptionParser = (data: string) => {
+        return createAst( data ).children.map( parseExtraOptions );
+    };
+    Util.parsers.SlashOptionsParser = parseChatInputOptions;
 }

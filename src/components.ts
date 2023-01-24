@@ -75,7 +75,7 @@ export function parseEmbed(embedBlock: Block) {
             fields: [],
         },
     };
-    for (let child of embedBlock.childs) {
+    for (let child of embedBlock.children) {
         let [name, ...values] = child.splits.map(removeEscapesAndTrim);
         name = name.trim();
         if (name === "title") {
@@ -193,7 +193,7 @@ export function parseComponents(input: Block) {
         type: 1,
         components: [],
     };
-    for (let child of input.childs) {
+    for (let child of input.children) {
         let [name, ...values] = child.splits.map(removeEscapesAndTrim);
         name = name.trim();
         if (name === "button") {
@@ -262,7 +262,7 @@ export function parseComponents(input: Block) {
             const maxValues = <number>Number(values.shift()?.trim());
             const disabled = values.shift()?.trim() === "yes";
             const options = [];
-            for (const subchild of child.childs) {
+            for (const subchild of child.children) {
                 let [subname, ...subvalues] =
                     subchild.splits.map(removeEscapesAndTrim);
                 subname = subname.trim();
@@ -404,7 +404,7 @@ export function parseComponents(input: Block) {
             menu.max_values = max_values;
             menu.disabled = disabled;
             const channelTypes = [];
-            for (const subchild of child.childs) {
+            for (const subchild of child.children) {
                 let [subname, ...subvalues] =
                     subchild.splits.map(removeEscapesAndTrim);
                 subname = subname.trim();
@@ -519,7 +519,7 @@ export function parseOptions(input: Block) {
             replied_user: false,
         },
     };
-    for (const child of input.childs) {
+    for (const child of input.children) {
         let [name, ...values] = child.splits.map(removeEscapesAndTrim);
         name = name.trim();
         if (name === "tts") {
@@ -530,7 +530,7 @@ export function parseOptions(input: Block) {
             };
             options.allowed_mentions.replied_user = true;
         } else if (name === "allowedMentions") {
-            for (const subchild of child.childs) {
+            for (const subchild of child.children) {
                 let [subname, ...subvalues] =
                     subchild.splits.map(removeEscapesAndTrim);
                 subname = subname.trim();
@@ -572,7 +572,7 @@ export function parseExtraOptions(input: Block) {
         deleteCommand: false,
     };
 
-    for (const child of input.childs) {
+    for (const child of input.children) {
         let [name, ...values] = child.splits.map(removeEscapesAndTrim);
         name = name.trim();
         if (name === "interaction") {
@@ -582,7 +582,7 @@ export function parseExtraOptions(input: Block) {
         } else if (name === "edits") {
             const [time, ...msgs] = values;
             options.edits.time = time;
-            for (const msg of child.childs) {
+            for (const msg of child.children) {
                 options.edits.messages.push(parseMessage(msg));
             }
         } else if (name === "delete") {
@@ -602,7 +602,7 @@ export function parseMessage(ast: Block) {
         reply: undefined,
     };
     let content = ast.content;
-    for (const child of ast.childs) {
+    for (const child of ast.children) {
         content = content.replace(child.name, "");
 
         let [name, _] = child.splits.map(removeEscapesAndTrim);
@@ -651,7 +651,7 @@ export function parseChatInputChoice<
             ? values.join(":")?.trim() ?? ""
             : parseInt(values.join(":")?.trim() ?? "0");
 
-    for (const child of ast.childs) {
+    for (const child of ast.children) {
         let [name, ...values] = child.splits.map(removeEscapesAndTrim);
         name = name.trim();
         if (name === "locale") {
@@ -678,7 +678,7 @@ export function parseChatInputStringOptions(ast: Block) {
     options.minLength = parseInt(values.shift()?.trim() ?? "0");
     options.maxLength = parseInt(values.shift()?.trim() ?? "1");
 
-    for (const child of ast.childs) {
+    for (const child of ast.children) {
         const [name, ...value] = child.splits.map(removeEscapesAndTrim);
         if (name === "choice") {
             if (!options.choices) options.choices = [];
@@ -719,7 +719,7 @@ export function parseChatInputUserRoleMentionableOptions(ast: Block) {
     options.description = <string>values.shift()?.trim();
     options.required = values.shift()?.trim() === "yes";
 
-    for (const child of ast.childs) {
+    for (const child of ast.children) {
         const [name, ...value] = child.splits.map(removeEscapesAndTrim);
         if (name === "locale") {
             const childname = child.name;
@@ -752,7 +752,7 @@ export function parseChatInputChannelOptions(ast: Block) {
     options.description = <string>values.shift()?.trim();
     options.required = values.shift()?.trim() === "yes";
 
-    for (const child of ast.childs) {
+    for (const child of ast.children) {
         const [name, ...value] = child.splits.map(removeEscapesAndTrim);
         if (name === "type") {
             options.channelTypes = value.map((x) =>
@@ -793,7 +793,7 @@ export function parseChatInputBooleanOptions(ast: Block) {
     options.description = <string>values.shift()?.trim();
     options.required = values.shift()?.trim() === "yes";
 
-    for (const child of ast.childs) {
+    for (const child of ast.children) {
         const [name, ...value] = child.splits.map(removeEscapesAndTrim);
         if (name === "locale") {
             const childname = child.name;
@@ -833,7 +833,7 @@ export function parseChatInputNumberOptions(ast: Block) {
     options.minValue = min ? parseInt(min) : undefined;
     options.maxValue = max ? parseInt(max) : undefined;
 
-    for (const child of ast.childs) {
+    for (const child of ast.children) {
         const [name, ...value] = child.splits.map(removeEscapesAndTrim);
         if (name === "choice") {
             if (!options.choices) options.choices = [];
@@ -870,7 +870,7 @@ export function parseChatInputSubCommandOptions(ast: Block) {
     options.name = <string>values.shift()?.trim();
     options.description = <string>values.shift()?.trim();
 
-    for (const child of ast.childs) {
+    for (const child of ast.children) {
         const [name, _] = child.splits.map(removeEscapesAndTrim);
         if (!options.options) options.options = [];
         if (name === "string") {
@@ -912,7 +912,7 @@ export function parseChatInputSubCommandGroupOptions(ast: Block) {
     options.name = <string>values.shift()?.trim();
     options.description = <string>values.shift()?.trim();
 
-    for (const child of ast.childs) {
+    for (const child of ast.children) {
         if (!options.options) options.options = [];
         const [name, _] = child.splits.map(removeEscapesAndTrim);
         if (name === "subCommand") {
