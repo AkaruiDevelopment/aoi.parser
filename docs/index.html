@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./style.css" />
+    <link rel="stylesheet" href="./assets/common.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+        integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+    <title>Aoi.Parser</title>
+</head>
+
+<body>
+    <div class="navbar">
+        <a class="logo" href="#"><img src="./assets/logo.gif" alt="" class="logo" /></a>
+        <div class="box">
+            <div class="links">
+                <a class="link" href="./changelogs">1.2.0</a>
+                <a href="#about" class="link">About</a>
+                <a href="#setup" class="link">Setup</a>
+                <a href="#links" class="link">Links</a>
+            </div>
+            <div class="sidebarbtn">
+                <div class="line"></div>
+                <div class="line mid"></div>
+                <div class="line"></div>
+            </div>
+        </div>
+    </div>
+    <div class="sidebar">
+        <div class="closebtn">&times;</div>
+        <div class="links">
+            <a href="./pg" class="link">PlayGround</a>
+            <a href="./changelogs" class="link">Changelogs</a>
+            <a href="./docs" class="link">Docs</a>
+        </div>
+        <div class="stats" style="flex-direction: column;">
+            <div class="stat">
+                <div class="stathead">Version:</div>
+                <div class="statcontent">1.2.0</div>
+            </div>
+            <div class="stat">
+                <div class="stathead">Downloads:</div>
+                <div class="statcontent ddd">0</div>
+            </div>
+            <div class="stat">
+                <div class="stathead">License:</div>
+                <div class="statcontent">Apache-2.0</div>
+            </div>
+            <div class="stat">
+                <div class="stathead">Maintainer:</div>
+                <div class="statcontent">USERSATOSHI</div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="main">
+            <div class="mainlogo">
+                <div class="stats">
+                    <div class="stat">
+                        <div class="stathead">Version:</div>
+                        <div class="statcontent">1.2.0</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stathead">Downloads:</div>
+                        <div class="statcontent ddd">0</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stathead">License:</div>
+                        <div class="statcontent">Apache-2.0</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stathead">Maintainer:</div>
+                        <div class="statcontent">USERSATOSHI</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="about" id="about">
+            <div class="head">Aoi.Parser</div>
+            <div class="content">
+                An aoi.js plugin that makes writing parsers way easier and
+                readable.
+            </div>
+
+            <div class="options">
+                Available options:
+                <div class="opt">
+                    <strong>1) Message Parser.</strong>
+
+                    <strong>2) ChatInput Option Parser</strong>
+                </div>
+            </div>
+            <div class="platforms">
+                Available on:
+                <div class="links">
+                    <a href="https://www.npmjs.com/package/aoi.parser" target="_blank"><i
+                            class="fa-brands fa-npm"></i></a>
+                    <a href="https://github.com/usersatoshi/parsers" target="_blank"><i
+                            class="fa-brands fa-github"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="setup" id="setup">
+            <div class="head">Setup</div>
+            <br />
+            <div class="content">Installation</div>
+            <div class="codeblock">
+                <div class="copyButton" data-id="npm">
+                    <i class="material-icons" id="copy">content_copy</i>
+                </div>
+                <code class="code" id="npm">
+                        <span class="variable">npm</span>
+                        <span class="function">i</span>
+                        <span class="global">aoi.parser</span>
+                    </code>
+            </div>
+
+            <div class="content">Setup</div>
+            <div class="codeblock">
+                <div class="copyButton" data-id="bsetup">
+                    <i class="material-icons" id="copy">content_copy</i>
+                </div>
+                <code class="code" id="bsetup">
+                        <span class="keyword">const</span>
+                        { <span class="class">Util</span> } =
+                        <span class="global">require</span>(
+                        <span class="string" style="font-style:italic;">'aoi.js'</span>
+                        );
+
+                        <br />
+
+                        <span class="keyword">const</span>
+                        { <span class="function">setup</span> } =
+                        <span class="global">require</span>(
+                        <span class="string" style="font-style:italic;">'aoi.parser'</span>
+                        );
+
+                        <br />
+                        <br />
+                        <span class="comment"
+                            >/*<br />This will update All the parsers in aoi.js<br />*/</span
+                        >
+                        <br />
+                        <span class="function">setup</span>(<span class="class"
+                            >Util</span
+                        >);
+
+                        <br />
+                        <br />
+
+
+                    </code>
+            </div>
+        </div>
+        <div class="linker" id="links">
+            <div class="head">Links</div>
+            <div class="links">
+                <a href="https://www.npmjs.com/package/aoi.parser" target="_blank" class="link">NPM</a>
+                <a href="https://github.com/usersatoshi/parsers" target="_blank" class="link">Github</a>
+                <a href="./docs" class="link">Documentation</a>
+            </div>
+        </div>
+        <div class="footer">
+            <div class="copyright">
+                &copy; 2023 USERSATOSHI. All rights reserved.
+            </div>
+        </div>
+                <script src="./assets/common.js"></script>
+        <script src="./script.js"></script>
+
+</body>
+
+</html>

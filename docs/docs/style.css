@@ -1,0 +1,236 @@
+body {
+    position: relative;
+}
+.rightsidebar {
+    margin-top: 100px;
+    background-color: rgb(27, 27, 27);
+    width: 250px;
+    height: 100%;
+    position: fixed;
+    left: 0;
+    top: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    scroll-behavior: smooth;
+    padding: 20px;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.rightsidebar .links {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    margin-left: 20px;
+    margin-top: 50px;
+    gap: 50px;
+}
+
+.rightsidebar .links .link {
+    color: #ffffff;
+    font-size: 15px;
+    position: relative;
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+}
+
+.rightsidebar .links .link h3 {
+    cursor: pointer;
+    transition: 500ms;
+    height: 20px;
+}
+
+.rightsidebar .links .link h3:hover {
+    color: #ff0000;
+    background-color: #ffffff11;
+    transform: scale(1.1);
+}
+
+
+.list {
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: flex-start;
+    margin-left: 20px;
+    margin-top: 50px;
+    gap:50px;
+}
+
+.list .link {
+    cursor: pointer;
+    transition: 500ms;
+}
+
+.list .link:hover {
+    color: #ff0000;
+    background-color: #ffffff11;
+    transform: scale(1.1);
+}
+
+.container {
+    display: flex;
+    position: absolute;
+    top:0;
+    right:0;
+    margin-top: 150px;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    gap:60px;
+    height:100%;
+    width:calc(100% - 250px);
+}
+
+.description {
+    color:white;
+    font-weight: 400;
+    font-size: 18px;
+}
+
+.title {
+    color: #ff0000;
+    font-weight: 800;
+    font-size: 40px;
+}
+
+.titlec {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.setup {
+    background-color: #000000;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.codeblock {
+    display: flex;
+    flex-direction: column;
+    align-items: baseline;
+    width: 75%;
+    margin-left: auto;
+    margin-right: auto;
+    word-wrap: break-word;
+    height: max-content;
+    padding: 20px;
+    background-color: rgba(183, 183, 183, 0.169);
+}
+
+.codeblock .copyButton {
+    float: right;
+    transition: 500ms;
+    color: rgb(56, 56, 56);
+}
+
+.codeblock .copyButton i {
+    cursor: pointer;
+    transition: 0.5s;
+}
+
+.codeblock .copyButton i:hover {
+    transform: scale(1.1);
+}
+
+.codeblock .code {
+    display: block;
+    box-sizing: border-box;
+    margin-top: 30px;
+    font-size: 15px;
+    width: 75%;
+    height: auto;
+    color: var(--codeblock-text-color);
+    word-wrap: break-word;
+    left: 0;
+    float: left;
+    text-align: left;
+    margin-left: 60px;
+}
+
+.codeblock code span {
+    word-wrap: break-word;
+}
+
+.keyword {
+    color: var(--keyword-color);
+}
+
+.string {
+    color: var(--string-color);
+}
+
+.number {
+    color: var(--number-color);
+}
+
+.comment {
+    color: var(--comment-color);
+}
+
+.global {
+    color: var(--global-color);
+}
+
+.boolean {
+    color: var(--boolean-color);
+}
+
+.variable,
+.object {
+    color: var(--variable-color);
+}
+
+.object {
+    font-style: italic;
+}
+
+.class {
+    color: var(--class-color);
+}
+
+.function {
+    color: var(--function-color);
+}
+
+.footer {
+    width: 100%;
+    height: 50px;
+    background-color: rgb(27, 27, 27);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+}
+
+.note {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    background-color: rgba(120, 131, 253, 0.445);
+    padding: 10px;
+    border-radius: 10px;
+    color: white;
+    width: 75%;
+    height:100%;
+    text-align: center;
+}

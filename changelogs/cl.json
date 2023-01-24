@@ -10,7 +10,7 @@
             "content": "+Official Documentation"
         },{
             "type": "fixed",
-            "content": "~footer returning ':' if iconUrl is not provided"
+            "content": "~fixed footer returning ':' if iconUrl is not provided"
         },
         {
             "type": "fixed",
