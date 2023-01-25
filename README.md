@@ -1,9 +1,17 @@
-# Aoi.Parser
 <div align="center">
-    <img src="./docs/assets/tlogo.gif">
+    <img src="https://media.discordapp.net/attachments/1067690161661558844/1067866099280003222/parser.png?width=1024&height=248">
+
+<p>A custom parser to upgrade aoi.js existing parsers to latest features</p>
 </div>
 
-A custom parser to upgrade aoi.js existing parsers to latest features
+## Installation
+
+**node.js 16.9.0 or newer is required.**
+
+```bash
+npm install aoi.parser
+yarn add aoi.parser
+```
 
 ## Setup
 
@@ -50,6 +58,6 @@ $sendMessage[
 
 - [USER SATOSHI](https://github.com/usersatoshi)
 - [NeoDevils](https://github.com/Neodevils)
-- [liya](https://github.com/Slyrith)
+- [Liya](https://github.com/Slyrith)
 
 
