@@ -2,7 +2,7 @@ const cl = document.getElementById( "cl" );
 
 document.addEventListener( "DOMContentLoaded", async function ()
 { 
-    const data = await ( await fetch( "../../changelogs/cl.json" ) ).json();
+    const data = await ( await fetch( "../cl/cl.json" ) ).json();
     
     data.forEach( d =>
     {
