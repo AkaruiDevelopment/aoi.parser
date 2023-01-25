@@ -565,7 +565,7 @@
                 }
             </style>
             <div class="navbar">
-                <a class="logo" href="#"><img src="./docs/assets/logo.gif" alt="" class="logo" /></a>
+                <a class="logo" href="#"><img src="/docs/assets/logo.gif" alt="" class="logo" /></a>
                 <div class="box">
                     <div class="links">
                         <a class="link" href="./changelogs">1.2.0</a>
