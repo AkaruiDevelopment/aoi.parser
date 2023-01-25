@@ -1,6 +1,6 @@
 # Aoi.Parser
 <div align="center">
-    <img width="100%" height="300px" src="./docs/assets/transparentlogo.gif">
+    <img src="./docs/assets/transparentlogo.gif">
 </div>
 
 A custom parser to upgrade aoi.js existing parsers to current latest features
