@@ -15,12 +15,12 @@ setup(Util);
 ```
 
 ## Example
-```php
+```js
 //  example on sending a embed with 1 button
 $sendMessage[
     {newEmbed:
         {title:Hello World}
-        {description:This is a example}
+        {description:This is an example}
         {color:Random}
         {footer:This is a footer}
     }
