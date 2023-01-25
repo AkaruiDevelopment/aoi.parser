@@ -3,7 +3,7 @@
     <img src="./docs/assets/tlogo.gif">
 </div>
 
-A custom parser to upgrade aoi.js existing parsers to current latest features
+A custom parser to upgrade aoi.js existing parsers to latest features
 
 ## Setup
 
