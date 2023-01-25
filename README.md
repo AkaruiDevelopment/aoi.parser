@@ -16,9 +16,9 @@ setup(Util);
 
 ## Links
 
-- [Docs][https://usersatoshi.github.io/parsers]
-- [NPM][https://npmjs.com/package/aoi.parser]
-- [GitHub][https://github.com/usersatoshi/parsers]
+- [Docs](https://usersatoshi.github.io/parsers)
+- [NPM](https://npmjs.com/package/aoi.parser)
+- [GitHub](https://github.com/usersatoshi/parsers)
   
 ## License
 
