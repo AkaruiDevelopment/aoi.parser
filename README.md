@@ -14,6 +14,28 @@ const { setup } = require("aoi.parser");
 setup(Util);
 ```
 
+## Example
+```php
+//  example on sending a embed with 1 button
+$sendMessage[
+    {newEmbed:
+        {title:Hello World}
+        {description:This is a example}
+        {color:Random}
+        {footer:This is a footer}
+    }
+    {actionRow:
+        {button:
+            Label:
+            1:
+            customid:
+            no:
+            💀
+        }
+    }
+]
+```
+
 ## Links
 
 - [Docs](https://usersatoshi.github.io/parsers)
