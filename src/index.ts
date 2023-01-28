@@ -76,7 +76,7 @@ export function setup( Util: any ) {
         return createAst( data ).children.map( parseComponents );
     }
     Util.parsers.EmbedParser = (data: string) => {
-        return createAst(data).children.map(parseEmbed);    
+        return createAst(data).children.map(x => parseEmbed(x).data);    
     };
     Util.parsers.FileParser = (data: string) => {
         return createAst(data).children.map(parseFiles);
