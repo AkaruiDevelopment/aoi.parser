@@ -1,29 +1,42 @@
 [
     {
+        "name": "1.2.1",
+        "date": "28/01/2023",
+        "changes": [
+            {
+                "type": "fixed",
+                "content": "~Fixed Setup for EmbedParser"
+            }
+        ]
+    },
+    {
         "name": "1.2.0",
         "date": "14/01/2023",
-        "changes" : [{
-            "type":"added",
-            "content": "+Support for chatInput options"
-        },{
-            "type":"added",
-            "content": "+Official Documentation"
-        },{
-            "type": "fixed",
-            "content": "~fixed footer returning ':' if iconUrl is not provided"
-        },
-        {
-            "type": "fixed",
-            "content": "~ephermal now works"
-        },
-        {
-            "type": "fixed",
-            "content":"now unicode emoji works in button"
-        },
-        {
-            "type": "fixed",
-            "content": "~timestamp now works properly"
-        }
-    ]
+        "changes": [
+            {
+                "type": "added",
+                "content": "+Support for chatInput options"
+            },
+            {
+                "type": "added",
+                "content": "+Official Documentation"
+            },
+            {
+                "type": "fixed",
+                "content": "~fixed footer returning ':' if iconUrl is not provided"
+            },
+            {
+                "type": "fixed",
+                "content": "~ephermal now works"
+            },
+            {
+                "type": "fixed",
+                "content": "now unicode emoji works in button"
+            },
+            {
+                "type": "fixed",
+                "content": "~timestamp now works properly"
+            }
+        ]
     }
 ]

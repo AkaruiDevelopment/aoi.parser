@@ -1,103 +1,115 @@
 <!DOCTYPE html>
 <html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="../assets/common.css" />
+        <link rel="stylesheet" href="./style.css" />
+        <script
+            src="https://code.jquery.com/jquery-3.6.3.min.js"
+            integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU="
+            crossorigin="anonymous"
+        ></script>
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+            integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+        />
+        <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/icon?family=Material+Icons"
+        />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined"
+            rel="stylesheet"
+        />
+        <title>Aoi.Parser | Docs</title>
+    </head>
 
-<head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="../assets/common.css" />
-    <link rel="stylesheet" href="./style.css" />
-    <script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
-        integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
-    <title>Aoi.Parser | Docs</title>
-</head>
-
-<body>
-    <div class="navbar">
-        <a class="logo" href="../"><img src="../assets/logo.gif" alt="" class="logo" /></a>
-        <div class="box">
+    <body>
+        <div class="navbar">
+            <a class="logo" href="../"
+                ><img src="../assets/logo.gif" alt="" class="logo"
+            /></a>
+            <div class="box">
+                <div class="links">
+                    <a class="link" href="../changelogs">1.2.1</a>
+                </div>
+                <div class="sidebarbtn">
+                    <div class="line"></div>
+                    <div class="line mid"></div>
+                    <div class="line"></div>
+                </div>
+            </div>
+        </div>
+        <div class="sidebar">
+            <div class="closebtn">&times;</div>
             <div class="links">
-                <a class="link" href="../changelogs">1.2.0</a>
+                <a href="../pg" class="link">PlayGround</a>
+                <a href="../changelogs" class="link">Changelogs</a>
+                <a href="../docs" class="link">Docs</a>
             </div>
-            <div class="sidebarbtn">
-                <div class="line"></div>
-                <div class="line mid"></div>
-                <div class="line"></div>
-            </div>
-        </div>
-    </div>
-    <div class="sidebar">
-        <div class="closebtn">&times;</div>
-        <div class="links">
-            <a href="../pg" class="link">PlayGround</a>
-            <a href="../changelogs" class="link">Changelogs</a>
-            <a href="../docs" class="link">Docs</a>
-        </div>
-        <div class="stats" style="flex-direction: column">
-            <div class="stat">
-                <div class="stathead">Version:</div>
-                <div class="statcontent">1.2.0</div>
-            </div>
-            <div class="stat">
-                <div class="stathead">Downloads:</div>
-                <div class="statcontent ddd">0</div>
-            </div>
-            <div class="stat">
-                <div class="stathead">License:</div>
-                <div class="statcontent">Apache-2.0</div>
-            </div>
-            <div class="stat">
-                <div class="stathead">Maintainer:</div>
-                <div class="statcontent">USERSATOSHI</div>
+            <div class="stats" style="flex-direction: column">
+                <div class="stat">
+                    <div class="stathead">Version:</div>
+                    <div class="statcontent">1.2.1</div>
+                </div>
+                <div class="stat">
+                    <div class="stathead">Downloads:</div>
+                    <div class="statcontent ddd">0</div>
+                </div>
+                <div class="stat">
+                    <div class="stathead">License:</div>
+                    <div class="statcontent">Apache-2.0</div>
+                </div>
+                <div class="stat">
+                    <div class="stathead">Maintainer:</div>
+                    <div class="statcontent">USERSATOSHI</div>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="cc">
-    <div class="rightsidebar">
-        <div class="links">
-            <div class="link" id="quickstart">
-                <h3>Quick Start</h3>
-            </div>
-            <div class="link" id="installation">
-                <h3>Installation</h3>
-            </div>
-            <div class="link" id="functions">
-                <h3>Functions</h3>
-            </div>
-            <div class="link" >
-                <h3 id="parsers">Parsers</h3>
-                    <div class="list">
-                        <div class="link" id="embed">
-                            <h4>Embed Parser</h4>
-                        </div>
-                        <div class="link" id="component">
-                            <h4>Component Parser</h4>
-                        </div>
-                        <div class="link" id="file">
-                            <h4>File Parser</h4>
-                        </div>
-                        <div class="link" id="options">
-                            <h4>Options Parser</h4>
+        <div class="cc">
+            <div class="rightsidebar">
+                <div class="links">
+                    <div class="link" id="quickstart">
+                        <h3>Quick Start</h3>
+                    </div>
+                    <div class="link" id="installation">
+                        <h3>Installation</h3>
+                    </div>
+                    <div class="link" id="functions">
+                        <h3>Functions</h3>
+                    </div>
+                    <div class="link">
+                        <h3 id="parsers">Parsers</h3>
+                        <div class="list">
+                            <div class="link" id="embed">
+                                <h4>Embed Parser</h4>
+                            </div>
+                            <div class="link" id="component">
+                                <h4>Component Parser</h4>
+                            </div>
+                            <div class="link" id="file">
+                                <h4>File Parser</h4>
+                            </div>
+                            <div class="link" id="options">
+                                <h4>Options Parser</h4>
+                            </div>
                         </div>
                     </div>
+                </div>
+            </div>
+            <div class="container" id="cl"></div>
+        </div>
+        <div class="footer">
+            <div class="copyright">
+                &copy; 2023 USERSATOSHI. All rights reserved.
             </div>
         </div>
-    </div> 
-    <div class="container" id="cl">
-
-    </div>
-    </div>
-    <div class="footer">
-        <div class="copyright">
-            &copy; 2023 USERSATOSHI. All rights reserved.
-        </div>
-    </div>
-    <script src="../assets/common.js"></script>
-    <script src="./script.js"></script>
-</body>
-
+        <script src="../assets/common.js"></script>
+        <script src="./script.js"></script>
+    </body>
 </html>
