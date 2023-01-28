@@ -1,5 +1,5 @@
 <div align="center">
-    <img src="https://media.discordapp.net/attachments/1067690161661558844/1067866099280003222/parser.png?width=1024&height=248">
+    <img src="./docs/assets/tlogo.gif">
 
 <p>A custom parser to upgrade aoi.js existing parsers to latest features</p>
 </div>
