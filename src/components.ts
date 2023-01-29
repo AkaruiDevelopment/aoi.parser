@@ -450,7 +450,7 @@ export function parseComponents(input: Block) {
             input.style = parsedStyle;
             input.placeholder = placeholder;
             input.required = required;
-            input.value = value;
+            input.value = !value ? undefined : value;
             input.min_length = min_length;
             input.max_length = max_length;
 
