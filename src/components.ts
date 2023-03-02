@@ -109,7 +109,8 @@ export function parseEmbed(embedBlock: Block) {
             if (
                 potentialIcon?.startsWith("http://") ||
                 potentialIcon?.startsWith("attachment://") ||
-                potentialIcon?.startsWith("https://")
+                potentialIcon?.startsWith("https://") ||
+                potentialIcon?.startsWith("//")
             ) {
                 res.data.footer = {
                     text: values.join(":").trim().replaceAll("#COLON#", ":"),
@@ -142,7 +143,11 @@ export function parseEmbed(embedBlock: Block) {
             };
         }
         if (name === "author") {
-            if (values[values.length - 1]?.startsWith("http")) {
+            if (
+                values[values.length - 1]?.startsWith("http") ||
+                (values.length > 2 &&
+                    values[values.length - 2]?.startsWith("http"))
+            ) {
                 const potentialIcon = values.pop()?.trim();
                 res.data.author = {
                     name: values.join(":").trim().replaceAll("#COLON#", ":"),
@@ -615,9 +620,9 @@ export function parseMessage(ast: Block) {
             const options = parseOptions(child);
             messageData["tts"] = options.tts;
             messageData.allowedMentions = <any>options.allowed_mentions;
-            messageData.reply = <ReplyOptions>(
-                (<unknown>options.message_reference?.message_id)
-            );
+            messageData.reply = <ReplyOptions>{
+                messageReference: options.message_reference?.message_id,
+            };
             // @ts-ignore
             messageData.fetchReply = options.fetchReply;
             // @ts-ignore
