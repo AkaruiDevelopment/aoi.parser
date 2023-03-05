@@ -620,9 +620,9 @@ export function parseMessage(ast: Block) {
             const options = parseOptions(child);
             messageData["tts"] = options.tts;
             messageData.allowedMentions = <any>options.allowed_mentions;
-            messageData.reply = <ReplyOptions>{
+            messageData.reply = options.message_reference?.message_id ? <ReplyOptions>{
                 messageReference: options.message_reference?.message_id,
-            };
+            }: undefined;
             // @ts-ignore
             messageData.fetchReply = options.fetchReply;
             // @ts-ignore
