@@ -42,7 +42,7 @@ export function parseEmbed(embedBlock: Block) {
         type: "embed";
         data: {
             title?: string;
-            description?: string;
+            description: string;
             url?: string;
             color?: number;
             timestamp?: string;
@@ -72,6 +72,7 @@ export function parseEmbed(embedBlock: Block) {
     } = {
         type: "embed",
         data: {
+            description: " ",
             fields: [],
         },
     };
