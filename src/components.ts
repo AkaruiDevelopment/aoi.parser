@@ -169,7 +169,7 @@ export function parseEmbed(embedBlock: Block) {
             }
         }
         if (name === "field") {
-            if (["yes", "no"].includes(values[values.length - 1]?.trim())) {
+            if (["yes", "no","true","false"].includes(values[values.length - 1]?.trim())) {
                 const inline = values.pop()?.trim() === "yes";
                 const name =
                     values.shift()?.trim().replaceAll("#COLON#", ":") ?? " ";
@@ -217,7 +217,7 @@ export function parseComponents(input: Block) {
             const customIdorUrl = <string>(
                 values.shift()?.trim().replaceAll("#COLON#", ":")
             );
-            const disabled = values.shift()?.trim() === "yes";
+            const disabled = ["yes","true"].includes(values.shift()?.trim() ?? "false");
             const emoji = values.shift()?.trim().replaceAll("#COLON#", ":");
             let parsedEmoji:
                 | undefined
@@ -266,7 +266,9 @@ export function parseComponents(input: Block) {
             );
             const minValues = <number>Number(values.shift()?.trim());
             const maxValues = <number>Number(values.shift()?.trim());
-            const disabled = values.shift()?.trim() === "yes";
+            const disabled = ["yes", "true"].includes(
+                values.shift()?.trim() ?? "false",
+            );
             const options = [];
             for (const subchild of child.children) {
                 let [subname, ...subvalues] =
@@ -282,7 +284,9 @@ export function parseComponents(input: Block) {
                     const description = <string>(
                         subvalues.shift()?.trim().replaceAll("#COLON#", ":")
                     );
-                    const defaultSelected = subvalues.shift()?.trim() === "yes";
+                    const defaultSelected = ["yes", "true"].includes(
+                        subvalues.shift()?.trim() ?? "false",
+                    );
                     const emoji = <string>(
                         subvalues.shift()?.trim().replaceAll("#COLON#", ":")
                     );
@@ -336,7 +340,9 @@ export function parseComponents(input: Block) {
                 ),
                 min_values = Number(values.shift()?.trim()),
                 max_values = Number(values.shift()?.trim()),
-                disabled = values.shift()?.trim() === "yes";
+                disabled = ["yes", "true"].includes(
+                    values.shift()?.trim() ?? "false",
+                );
 
             userInput.custom_id = customId;
             userInput.placeholder = placeholder;
@@ -359,7 +365,9 @@ export function parseComponents(input: Block) {
                 ),
                 min_values = Number(values.shift()?.trim()),
                 max_values = Number(values.shift()?.trim()),
-                disabled = values.shift()?.trim() === "yes";
+                disabled = ["yes", "true"].includes(
+                    values.shift()?.trim() ?? "false",
+                );
 
             roleInput.custom_id = customId;
             roleInput.placeholder = placeholder;
@@ -381,7 +389,9 @@ export function parseComponents(input: Block) {
             );
             const min_values = Number(values.shift()?.trim());
             const max_values = Number(values.shift()?.trim());
-            const disabled = values.shift()?.trim() === "yes";
+            const disabled = ["yes", "true"].includes(
+                values.shift()?.trim() ?? "false",
+            );
             menu.custom_id = customId;
             menu.placeholder = placeholder;
             menu.min_values = min_values;
@@ -403,7 +413,9 @@ export function parseComponents(input: Block) {
             );
             const min_values = Number(values.shift()?.trim());
             const max_values = Number(values.shift()?.trim());
-            const disabled = values.shift()?.trim() === "yes";
+            const disabled = ["yes", "true"].includes(
+                values.shift()?.trim() ?? "false",
+            );
             menu.custom_id = customId;
             menu.placeholder = placeholder;
             menu.min_values = min_values;
@@ -444,7 +456,9 @@ export function parseComponents(input: Block) {
             const placeholder = <string>(
                 values.shift()?.trim().replaceAll("#COLON#", ":")
             );
-            const required = values.shift()?.trim() === "yes";
+            const required = ["yes", "true"].includes(
+                values.shift()?.trim() ?? "false",
+            );
             const value = <string>(
                 values.shift()?.trim().replaceAll("#COLON#", ":")
             );
@@ -534,7 +548,9 @@ export function parseOptions(input: Block) {
             options.message_reference = {
                 message_id: values[0]?.trim(),
             };
-            options.allowed_mentions.replied_user = true;
+            options.allowed_mentions.replied_user = ["yes", "true"].includes(
+                values[1] ?? "false",
+            );
         } else if (name === "allowedMentions") {
             for (const subchild of child.children) {
                 let [subname, ...subvalues] =
@@ -678,7 +694,9 @@ export function parseChatInputStringOptions(ast: Block) {
     const [_, ...values] = ast.splits.map(removeEscapesAndTrim);
     options.name = <string>values.shift()?.trim();
     options.description = <string>values.shift()?.trim();
-    options.required = values.shift()?.trim() === "yes";
+    options.required = ["yes", "true"].includes(
+        values.shift()?.trim() ?? "false",
+    );
     // @ts-ignore
     options.autocomplete = values.shift()?.trim() === "yes";
     options.minLength = parseInt(values.shift()?.trim() ?? "0");
@@ -723,7 +741,9 @@ export function parseChatInputUserRoleMentionableOptions(ast: Block) {
 
     options.name = <string>values.shift()?.trim();
     options.description = <string>values.shift()?.trim();
-    options.required = values.shift()?.trim() === "yes";
+    options.required = ["yes", "true"].includes(
+        values.shift()?.trim() ?? "false",
+    );
 
     for (const child of ast.children) {
         const [name, ...value] = child.splits.map(removeEscapesAndTrim);
@@ -756,7 +776,9 @@ export function parseChatInputChannelOptions(ast: Block) {
     };
     options.name = <string>values.shift()?.trim();
     options.description = <string>values.shift()?.trim();
-    options.required = values.shift()?.trim() === "yes";
+    options.required = ["yes", "true"].includes(
+        values.shift()?.trim() ?? "false",
+    );
 
     for (const child of ast.children) {
         const [name, ...value] = child.splits.map(removeEscapesAndTrim);
@@ -797,7 +819,9 @@ export function parseChatInputBooleanOptions(ast: Block) {
 
     options.name = <string>values.shift()?.trim();
     options.description = <string>values.shift()?.trim();
-    options.required = values.shift()?.trim() === "yes";
+    options.required = ["yes", "true"].includes(
+        values.shift()?.trim() ?? "false",
+    );
 
     for (const child of ast.children) {
         const [name, ...value] = child.splits.map(removeEscapesAndTrim);
@@ -831,9 +855,13 @@ export function parseChatInputNumberOptions(ast: Block) {
 
     options.name = <string>values.shift()?.trim();
     options.description = <string>values.shift()?.trim();
-    options.required = values.shift()?.trim() === "yes";
+    options.required = ["yes", "true"].includes(
+        values.shift()?.trim() ?? "false",
+    );
     // @ts-ignore
-    options.autocomplete = values.shift()?.trim() === "yes";
+    options.autocomplete = ["yes", "true"].includes(
+        values.shift()?.trim() ?? "false",
+    );
     const min = values.shift()?.trim();
     const max = values.shift()?.trim();
     options.minValue = min ? parseInt(min) : undefined;
