@@ -1,5 +1,5 @@
 <div align="center">
-    <img src="./docs/assets/tlogo.gif">
+    <img src="./.github/assets/logo.gif" alt="aoiparser">
 
 <p>A custom parser to upgrade aoi.js existing parsers to latest features</p>
 </div>
@@ -23,6 +23,7 @@ setup(Util);
 ```
 
 ## Example
+
 ```js
 //  example on sending a embed with 1 button
 $sendMessage[
@@ -59,5 +60,3 @@ $sendMessage[
 - [USER SATOSHI](https://github.com/usersatoshi)
 - [NeoDevils](https://github.com/Neodevils)
 - [Liya](https://github.com/Slyrith)
-
-
