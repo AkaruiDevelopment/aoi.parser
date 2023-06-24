@@ -9,15 +9,15 @@
 **node.js 17.0.0 or newer is required.**
 
 ```bash
-npm install aoi.parser
-yarn add aoi.parser
+npm install @akarui/aoi.parser
+yarn add @akarui/aoi.parser
 ```
 
 ## Setup
 
 ```js
 const { Util } = require("aoi.js");
-const { setup } = require("aoi.parser");
+const { setup } = require("@akarui/aoi.parser");
 
 setup(Util);
 ```
@@ -47,9 +47,9 @@ $sendMessage[
 
 ## Links
 
-- [Docs](https://usersatoshi.github.io/parsers)
-- [NPM](https://npmjs.com/package/aoi.parser)
-- [GitHub](https://github.com/usersatoshi/parsers)
+- [Docs](https://aoi-parser.vercel.app)
+- [NPM](https://npmjs.com/package/@akarui/aoi.parser)
+- [GitHub](https://github.com/Akaruidevelopment/aoi.parser)
   
 ## License
 
