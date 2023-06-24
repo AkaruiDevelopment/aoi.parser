@@ -57,6 +57,6 @@ $sendMessage[
 
 ## Contributors
 
-- [USER SATOSHI](https://github.com/usersatoshi)
-- [NeoDevils](https://github.com/Neodevils)
-- [Liya](https://github.com/Slyrith)
+<a href="https://github.com/Akaruidevelopment/aoi.parser/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=AkaruiDevelopment/aoi.parser"  alt="aoi.parser-contributors"/>
+</a>
