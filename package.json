@@ -29,7 +29,7 @@
     "dist": "./dist"
   },
   "repository": {
-    "url": "https://github.com/USERSATOSHI/parsers",
+    "url": "https://github.com/akaruidevelopment/aoi.parser",
     "type": "git"
   },
   "readme": "README.md",
@@ -40,7 +40,7 @@
     "discord api"
   ],
   "bugs": {
-    "url": "https://github.com/usersatoshi/parsers/issues"
+    "url": "https://github.com/akaruidevelopment/aoi.parser/issues"
   },
   "license": "Apache-2.0"
 }
